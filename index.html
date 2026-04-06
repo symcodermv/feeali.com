@@ -27,12 +27,16 @@ button{font-family:'Sora',sans-serif;cursor:pointer}
 /* ══ INTRO SPLASH ══ */
 #splash{
   position:fixed;inset:0;z-index:9999;background:#000;
-  display:flex;align-items:center;justify-content:center;
-  opacity:1;transition:opacity .6s ease;
+  display:none;/* JS shows it instantly when video is cached */
+  align-items:center;justify-content:center;
 }
-#splash.hidden{opacity:0;pointer-events:none}
-#splash.gone{display:none}
-#splashVid{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+#splash.on{display:flex}
+#splashVid{
+  width:100%;height:100%;object-fit:cover;
+  position:absolute;inset:0;
+  opacity:0;transition:opacity .25s ease;
+}
+#splashVid.show{opacity:1}
 .sp-layer{
   position:absolute;inset:0;
   background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.18) 50%,rgba(0,0,0,.45) 100%);
@@ -338,35 +342,98 @@ footer{background:var(--g900);color:rgba(255,255,255,.55);padding:48px 0 20px;bo
   <div class="sp-bar"><div class="sp-fill" id="spFill"></div></div>
 </div>
 
-<!-- Skip works before module loads -->
+<!-- INTRO: show splash instantly from cache, video fades in when ready -->
 <script>
-window._splashDone=false;
-window._splashTimer=null;
-function skipIntro(){
-  if(window._splashDone)return;
-  window._splashDone=true;
-  if(window._splashTimer)clearTimeout(window._splashTimer);
-  var sp=document.getElementById('splash');
-  var vid=document.getElementById('splashVid');
-  if(sp){
-    sp.style.opacity='0';
-    sp.style.transition='opacity 0.55s ease';
-    setTimeout(function(){sp.style.display='none';},580);
-  }
-  if(vid){try{vid.pause();}catch(e){}vid.src='';}
-  document.body.style.overflow='';
-}
-// Splash is visible by default — hide it immediately if no video will be set
-// (Firebase module will show it again if needed)
-window._splashReady=false;
-document.getElementById('spSkip').addEventListener('click',skipIntro);
-document.addEventListener('keydown',function(e){if(e.key==='Escape')skipIntro();});
+window._splashDone = false;
+window._splashTimer = null;
 
-// Hide splash immediately — module will re-show if video exists
-(function(){
-  var sp=document.getElementById('splash');
-  sp.style.display='none';
+function skipIntro() {
+  if (window._splashDone) return;
+  window._splashDone = true;
+  if (window._splashTimer) clearTimeout(window._splashTimer);
+  var sp = document.getElementById('splash');
+  var vid = document.getElementById('splashVid');
+  if (sp) {
+    sp.style.transition = 'opacity .45s ease';
+    sp.style.opacity = '0';
+    setTimeout(function () {
+      sp.style.display = 'none';
+      sp.style.opacity = '1';
+      sp.style.transition = '';
+    }, 470);
+  }
+  if (vid) { try { vid.pause(); } catch(e) {} vid.src = ''; }
+  document.body.style.overflow = '';
+}
+
+function startVideoSplash(url, dur) {
+  if (!url || window._splashDone) return;
+  var sp = document.getElementById('splash');
+  var vid = document.getElementById('splashVid');
+  var fill = document.getElementById('spFill');
+
+  // Show black splash IMMEDIATELY — no wait
+  sp.classList.add('on');
+  document.body.style.overflow = 'hidden';
+
+  // Reset progress bar
+  fill.style.transition = 'none';
+  fill.style.width = '0%';
+
+  // Load video
+  vid.src = url;
+  vid.muted = true;
+  vid.loop = true;
+  vid.playsInline = true;
+  vid.setAttribute('playsinline', '');
+  vid.setAttribute('webkit-playsinline', '');
+
+  function onPlaying() {
+    if (window._splashDone) return;
+    // Video is playing — fade it in over the black
+    vid.classList.add('show');
+    // Start progress bar
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        fill.style.transition = 'width ' + (dur / 1000) + 's linear';
+        fill.style.width = '100%';
+      });
+    });
+    // Auto-skip after duration
+    window._splashTimer = setTimeout(function () {
+      if (!window._splashDone) skipIntro();
+    }, dur);
+  }
+
+  var p = vid.play();
+  if (p !== undefined) {
+    p.then(onPlaying).catch(function () { onPlaying(); });
+  } else {
+    onPlaying();
+  }
+
+  // Fallback if play() stalls
+  setTimeout(function () {
+    if (!window._splashDone && !vid.classList.contains('show')) onPlaying();
+  }, 1200);
+}
+
+// ── READ CACHE: start splash with zero delay on every refresh ──
+(function () {
+  try {
+    var cached = localStorage.getItem('feeali_intro');
+    if (cached) {
+      var d = JSON.parse(cached);
+      if (d && d.url) {
+        // Start IMMEDIATELY — synchronously before anything else renders
+        startVideoSplash(d.url, (d.dur || 5) * 1000);
+      }
+    }
+  } catch (e) {}
 })();
+
+document.getElementById('spSkip').addEventListener('click', skipIntro);
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skipIntro(); });
 </script>
 
 <!-- ══ MAIN SITE ══ -->
@@ -663,42 +730,43 @@ function applyLogo(src){
   if(ftTxt)ftTxt.style.display='none';
 }
 
-// ── INTRO VIDEO — shows splash the moment page opens ──
+// ── INTRO VIDEO — Firebase syncs cache, cache plays instantly ──
 get(ref(db,'settings/introVideo')).then(s=>{
-  if(!s.exists())return;
+  if(!s.exists()){
+    // No video — clear cache and hide splash
+    try{localStorage.removeItem('feeali_intro');}catch(e){}
+    if(!window._splashDone){
+      const sp=document.getElementById('splash');
+      if(sp)sp.style.display='none';
+      document.body.style.overflow='';
+    }
+    return;
+  }
   const data=s.val();
   const url=typeof data==='string'?data:(data.url||'');
-  const dur=((typeof data==='object'&&data.duration)||5)*1000;
-  if(!url)return;
-
-  // Show splash fullscreen immediately
-  const sp=document.getElementById('splash');
-  const vid=document.getElementById('splashVid');
-  const fill=document.getElementById('spFill');
-  sp.style.display='flex';
-  sp.style.opacity='1';
-  document.body.style.overflow='hidden';
-
-  // Load video source and play
-  vid.src=url;
-  vid.muted=true;
-  vid.loop=true;
-  vid.playsInline=true;
-  vid.setAttribute('playsinline','');
-  vid.setAttribute('webkit-playsinline','');
-  // Try to play; if blocked (iOS), splash still shows logo + progress bar
-  const playP=vid.play();
-  if(playP)playP.catch(()=>{});
-
-  // Animate progress bar
-  fill.style.transition=`width ${dur/1000}s linear`;
-  setTimeout(()=>{fill.style.width='100%';},80);
-
-  // Auto-skip after duration
-  window._splashTimer=setTimeout(()=>{
-    if(!window._splashDone)skipIntro();
-  },dur);
-}).catch(()=>{});
+  const dur=(typeof data==='object'&&data.duration)||5;
+  if(!url){
+    try{localStorage.removeItem('feeali_intro');}catch(e){}
+    if(!window._splashDone){
+      const sp=document.getElementById('splash');
+      if(sp)sp.style.display='none';
+      document.body.style.overflow='';
+    }
+    return;
+  }
+  // Save to localStorage so next refresh starts instantly
+  try{localStorage.setItem('feeali_intro',JSON.stringify({url,dur}));}catch(e){}
+  // Only start if localStorage cache didn't already start it
+  if(!window._splashDone && !document.getElementById('splash').classList.contains('on')){
+    startVideoSplash(url, dur*1000);
+  }
+}).catch(()=>{
+  if(!window._splashDone){
+    const sp=document.getElementById('splash');
+    if(sp)sp.style.display='none';
+    document.body.style.overflow='';
+  }
+});
 // ── End intro video ──
 
 // ── FIREBASE LISTENERS ──
