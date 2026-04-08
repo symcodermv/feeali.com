@@ -1155,7 +1155,7 @@ function buildTicker(){
 }
 
 // ── MODALS ──
-window.openArt=function(id){
+  window.openArt=function(id){
   const a=arts.find(z=>z.id===id);if(!a)return;
   const img=document.getElementById('amImg'),vid=document.getElementById('amVid');
   if(a.videoUrl){vid.src=a.videoUrl;vid.style.display='block';img.style.display='none';}
@@ -1214,8 +1214,8 @@ window.openArt=function(id){
   document.getElementById('amod').classList.add('op');
   document.body.style.overflow='hidden';
 };
-// ── SHARE ──
-window.doShare = function(p)window.cpLink = function() {
+
+window.cpLink = function() {
   var btn = document.getElementById('cpBtn');
   var url = window._cpUrl || 'https://www.feeali.com';
   function ok() {
@@ -1239,7 +1239,9 @@ window.doShare = function(p)window.cpLink = function() {
     document.execCommand('copy'); document.body.removeChild(ta); ok();
   }
 };
-vids.find(z=>z.id===id);if(!v)return;
+
+window.openVid = function(id){
+  const v = vids.find(z=>z.id===id);if(!v)return;
   const img=document.getElementById('amImg'),vid=document.getElementById('amVid');
   if(v.url){vid.src=v.url;vid.style.display='block';img.style.display='none';}
   else if(v.thumbnail){img.src=v.thumbnail;img.style.display='block';vid.style.display='none';}
