@@ -378,38 +378,35 @@ body.dark .amod-box{background:var(--dm-bg2)}
 .cat-economy{background:#E8FBF5;color:#065F46}.cat-report{background:#FEF3C7;color:#92400E}
 .cat-lifestyle{background:#FFF1F2;color:#9F1239}
 /* ══ SHARE ══ */
-.share-bar{display:flex;flex-direction:column;gap:12px;margin-top:20px;padding-top:18px;border-top:1px dashed var(--bdr2)}
-.share-lbl{font-size:11px;font-weight:700;color:var(--g400);text-transform:uppercase;letter-spacing:1.5px;font-family:var(--fn)}
-.share-btns{display:flex;gap:8px;flex-wrap:wrap}
-/* Base button — icon circle style */
+/* ══ SHARE SHEET ══ */
+.share-bar{margin-top:24px;padding-top:20px;border-top:1px dashed var(--bdr2)}
+.share-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.share-lbl{font-size:12px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:1.5px;font-family:var(--fn);display:flex;align-items:center;gap:6px}
+.share-lbl::before{content:'';width:3px;height:14px;background:var(--pri);border-radius:2px;display:block}
+.share-url-box{display:flex;align-items:center;gap:8px;background:var(--pril);border:1px dashed var(--bdr2);border-radius:10px;padding:9px 13px;margin-bottom:16px}
+.share-url-txt{flex:1;font-size:12px;color:var(--pri);font-family:var(--fn);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
+.share-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:480px){.share-btns{grid-template-columns:repeat(3,1fr)}}
 .sh-btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:9px 16px;border-radius:30px;
-  font-size:12px;font-weight:700;cursor:pointer;border:none;
-  transition:all .22s cubic-bezier(.4,0,.2,1);
-  font-family:var(--fn);white-space:nowrap;text-decoration:none;
-  line-height:1;color:#fff;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:14px 8px;border-radius:14px;
+  font-size:11px;font-weight:700;cursor:pointer;border:none;
+  transition:all .2s ease;font-family:var(--fn);
+  color:#fff;position:relative;overflow:hidden;
 }
-.sh-btn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .22s;background:rgba(255,255,255,.15)}
-.sh-btn:hover::before{opacity:1}
-.sh-btn:hover{transform:translateY(-3px)}
-.sh-btn:active{transform:translateY(-1px)}
-/* Facebook */
-.sh-fb{background:linear-gradient(135deg,#1877F2 0%,#0C5CC5 100%);box-shadow:0 4px 14px rgba(24,119,242,.35)}
-.sh-fb:hover{box-shadow:0 8px 20px rgba(24,119,242,.5)}
-/* Twitter / X */
-.sh-tw{background:linear-gradient(135deg,#14171A 0%,#333 100%);box-shadow:0 4px 14px rgba(0,0,0,.3)}
-.sh-tw:hover{box-shadow:0 8px 20px rgba(0,0,0,.45)}
-/* WhatsApp */
-.sh-wa{background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);box-shadow:0 4px 14px rgba(37,211,102,.35)}
-.sh-wa:hover{box-shadow:0 8px 20px rgba(37,211,102,.5)}
-/* Telegram */
-.sh-tg{background:linear-gradient(135deg,#2AABEE 0%,#1A7FBD 100%);box-shadow:0 4px 14px rgba(42,171,238,.35)}
-.sh-tg:hover{box-shadow:0 8px 20px rgba(42,171,238,.5)}
-/* Copy */
-.sh-cp{background:linear-gradient(135deg,var(--pri) 0%,var(--prid) 100%);color:#fff;box-shadow:0 4px 14px rgba(27,182,141,.3)}
-.sh-cp:hover{box-shadow:0 8px 20px rgba(27,182,141,.5)}
-.sh-cp.copied{background:linear-gradient(135deg,#059669 0%,#047857 100%)!important}
+.sh-btn:active{transform:scale(.94)}
+.sh-btn:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.sh-btn svg{flex-shrink:0}
+.sh-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.25);margin-bottom:2px}
+/* Platform colours */
+.sh-fb{background:linear-gradient(145deg,#1877F2,#0e5cc5);box-shadow:0 6px 18px rgba(24,119,242,.4)}
+.sh-wa{background:linear-gradient(145deg,#25D366,#128C7E);box-shadow:0 6px 18px rgba(37,211,102,.4)}
+.sh-tg{background:linear-gradient(145deg,#2AABEE,#1878b4);box-shadow:0 6px 18px rgba(42,171,238,.4)}
+.sh-tw{background:linear-gradient(145deg,#222,#000);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.sh-cp{background:linear-gradient(145deg,var(--pri),var(--prid));box-shadow:0 6px 18px rgba(27,182,141,.4)}
+.sh-cp.copied{background:linear-gradient(145deg,#059669,#047857)!important}
+body.dark .share-url-box{background:var(--dm-bg3);border-color:var(--dm-bdr)}
+body.dark .share-url-txt{color:var(--pri2)}
 /* ══ TIME ══ */
 .time-ago{font-size:11px;color:var(--g400);font-family:var(--fn);white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
 .time-ago.fresh::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite;flex-shrink:0;margin-left:2px}
@@ -563,7 +560,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
   <div class="sm-body">
     <span class="sm-sec-lbl">ދާއިރާ</span>
     <div class="sm-cat-grid" id="smCatGrid">
-      <div class="sm-cat-item on" data-cat="" onclick="setF(null,this);closeSide()"><span class="ci">🏠</span>ހؤمH</div>
+      <div class="sm-cat-item on" data-cat="" onclick="setF(null,this);closeSide()"><span class="ci">🏠</span>ހުރިހާ</div>
     </div>
   </div>
   <div class="sm-foot">
@@ -712,7 +709,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
         <a onclick="">Contact Us</a>
         <a onclick="">Privacy Policy</a>
       </div>
-      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026@ All rights reserved.</p>
     </div>
   </div>
 </footer>
@@ -992,7 +989,7 @@ function renderLat(list){
 
 function renderRep(list){
   const g=document.getElementById('repGrid');
-  if(!list.length){g.innerHTML=`<div class="empty" style="color:rgba(255,255,255,.3)"><div class="ei">📋</div></div>`;return;}
+  if(!list.length){g.innerHTML=`<div class="empty" style="color:rgba(255,255,255,.3)"><div class="ei"></div></div>`;return;}
   const[f,...rest]=list;
   g.innerHTML=`
     <div class="fhero" onclick="openArt('${f.id}')">
@@ -1186,99 +1183,100 @@ window.openArt=function(id){
   } else {
     bodyEl.innerHTML='';
   }
-  // ── SHARE — store data, render buttons, share on click ──
-  // Use article ID encoded simply — no Firebase format visible, always www.feeali.com
-  const _artNum = btoa(id).replace(/[^a-z0-9]/gi,'').slice(0,8); // short opaque ID
-  window._shareData = {
-    url:   'https://www.feeali.com/news/' + _artNum,
-    img:   (a.imageUrl||'').trim(),
-    title: (a.title||'').trim(),
-    desc:  (a.summary||a.title||'').trim()
-  };
-  document.getElementById('amShare').innerHTML = `
-    <span class="share-lbl">Share</span>
-    <div class="share-btns">
-      <button class="sh-btn sh-fb"  onclick="doShare('fb')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        Facebook
-      </button>
-      <button class="sh-btn sh-tw"  onclick="doShare('tw')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        Twitter
-      </button>
-      <button class="sh-btn sh-wa"  onclick="doShare('wa')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp
-      </button>
-      <button class="sh-btn sh-tg"  onclick="doShare('tg')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-        Telegram
-      </button>
-      <button class="sh-btn sh-cp" id="cpBtn" onclick="doShare('cp')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        Copy
-      </button>
-    </div>`;
+  // ── SHARE ──
+  var _shareUrl   = 'https://www.feeali.com';
+  var _shareTitle = (a.title||'').trim();
+  var _shareImg   = (a.imageUrl||'').trim();
+  var _shareDesc  = (a.summary||a.title||'').trim();
+  // Store globally so doShare() can access at click time
+  window._sd = {u:_shareUrl, t:_shareTitle, i:_shareImg, d:_shareDesc};
+
+  document.getElementById('amShare').innerHTML =
+    '<div class="share-top"><span class="share-lbl">Share this news</span></div>' +
+    '<div class="share-url-box"><span class="share-url-txt">www.feeali.com</span></div>' +
+    '<div class="share-btns">' +
+      '<button class="sh-btn sh-fb" onclick="doShare(\'fb\')">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>' +
+        'Facebook' +
+      '</button>' +
+      '<button class="sh-btn sh-wa" onclick="doShare(\'wa\')">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>' +
+        'WhatsApp' +
+      '</button>' +
+      '<button class="sh-btn sh-tg" onclick="doShare(\'tg\')">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>' +
+        'Telegram' +
+      '</button>' +
+      '<button class="sh-btn sh-tw" onclick="doShare(\'tw\')">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>' +
+        'Twitter' +
+      '</button>' +
+      '<button class="sh-btn sh-cp" id="cpBtn" onclick="doShare(\'cp\')">' +
+        '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+        'Copy Link' +
+      '</button>' +
+    '</div>';
 
   document.getElementById('amod').classList.add('op');
   document.body.style.overflow='hidden';
 };
-// ── doShare: all platforms, called on button click ──
-window.doShare = function(platform) {
-  const d = window._shareData || {};
-  const url   = d.url   || 'https://www.feeali.com';
-  const img   = d.img   || '';
-  const title = d.title || '';
-  const desc  = d.desc  || '';
-  const E = encodeURIComponent;
+// ── SHARE ──
+window.doShare = function(p) {
+  var s  = window._sd || {};
+  var u  = s.u || 'https://www.feeali.com';
+  var t  = s.t || '';
+  var im = s.i || '';
+  var E  = encodeURIComponent;
 
-  if (platform === 'fb') {
-    // Facebook: sharer.php — shows feeali.com as domain, passes image directly
-    let fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + E(url);
-    if (img)   fbUrl += '&picture=' + E(img);
-    if (title) fbUrl += '&title='   + E(title);
-    if (desc)  fbUrl += '&description=' + E(desc);
-    window.open(fbUrl, 'fbshare', 'width=640,height=500,scrollbars=yes,resizable=yes');
+  if (p === 'fb') {
+    // Facebook — sharer with picture param
+    var fb = 'https://www.facebook.com/sharer/sharer.php?u=' + E(u);
+    if (im) fb += '&picture=' + E(im);
+    if (t)  fb += '&title='   + E(t);
+    window.open(fb, 'fbshare', 'width=600,height=500,scrollbars=yes');
 
-  } else if (platform === 'tw') {
-    const twUrl = 'https://twitter.com/intent/tweet?text=' + E(title) + '&url=' + E(url);
-    window.open(twUrl, '_blank', 'width=600,height=400');
+} else if (p === 'wa') {
+  // WhatsApp — title + link on separate lines
+  window.open('https://api.whatsapp.com/send?text=' + E(t + '\n\n' + u), '_blank');
 
-  } else if (platform === 'wa') {
-    // WhatsApp: title + image link + article link all in one message
-    const msg = title + (img ? '\n' + img : '') + '\n' + url;
-    window.open('https://wa.me/?text=' + E(msg), '_blank');
+} else if (p === 'tg') {
+    // Telegram
+    window.open('https://t.me/share/url?url=' + E(u) + '&text=' + E(t), '_blank');
 
-  } else if (platform === 'tg') {
-    // Telegram: title + image + link
-    const tgText = title + (img ? '\n' + img : '') + '\n' + url;
-    window.open('https://t.me/share/url?url=' + E(url) + '&text=' + E(tgText), '_blank');
+  } else if (p === 'tw') {
+    // Twitter/X
+    window.open('https://twitter.com/intent/tweet?text=' + E(t) + '&url=' + E(u), '_blank');
 
-  } else if (platform === 'cp') {
-    // Copy clean URL
-    const btn = document.getElementById('cpBtn');
-    const copyIt = function() {
+  } else if (p === 'cp') {
+    // Copy URL
+    var btn = document.getElementById('cpBtn');
+    var success = function() {
       if (btn) {
-        const o = btn.innerHTML;
-        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+        btn.textContent = '✅ Copied!';
         btn.classList.add('copied');
-        setTimeout(function(){ btn.innerHTML = o; btn.classList.remove('copied'); }, 2200);
+        setTimeout(function() {
+          btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy Link';
+          btn.classList.remove('copied');
+        }, 2000);
       }
     };
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(copyIt).catch(function(){
-        _fbCopy(url); copyIt();
+      navigator.clipboard.writeText(u).then(success).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = u; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        success();
       });
-    } else { _fbCopy(url); copyIt(); }
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = u; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      success();
+    }
   }
 };
-function _fbCopy(text){
-  var t=document.createElement('textarea');
-  t.value=text;t.style.position='fixed';t.style.opacity='0';
-  document.body.appendChild(t);t.select();
-  try{document.execCommand('copy');}catch(e){}
-  document.body.removeChild(t);
-}
+
+
 
 window.openVid=function(id){
   const v=vids.find(z=>z.id===id);if(!v)return;
