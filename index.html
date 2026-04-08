@@ -3,9 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>ފީއަލި</title>
-<meta name="description" content="ފީއަލި — ދިވެހިރާއްޖޭގެ ފަހުގެ ހަބަރު">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title id="pageTitle">ފީއަލި</title>
+<meta name="description" content="ފީއަލި — ދިWCWCWC ހWCWCWC" id="metaDesc">
+<!-- Open Graph for Facebook / social sharing with image -->
+<meta property="og:type" content="website" id="ogType">
+<meta property="og:site_name" content="ފީއަލި">
+<meta property="og:title" content="ފީއަލި" id="ogTitle">
+<meta property="og:description" content="ދިވެހި ހަބަރު" id="ogDesc">
+<meta property="og:image" content="" id="ogImage">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="" id="ogUrl">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ފީއަލި" id="twTitle">
+<meta name="twitter:description" content="" id="twDesc">
+<meta name="twitter:image" content="" id="twImage">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
@@ -528,7 +541,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
   <div class="sm-body">
     <span class="sm-sec-lbl">ދާއިރާ</span>
     <div class="sm-cat-grid" id="smCatGrid">
-      <div class="sm-cat-item on" data-cat="" onclick="setF(null,this);closeSide()"><span class="ci">🏠</span>ހުރިހާ</div>
+      <div class="sm-cat-item on" data-cat="" onclick="setF(null,this);closeSide()"><span class="ci">🏠</span>ހؤمH</div>
     </div>
   </div>
   <div class="sm-foot">
@@ -677,7 +690,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
         <a onclick="">Contact Us</a>
         <a onclick="">Privacy Policy</a>
       </div>
-      <p class="ft-copy">&copy; 2026 All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
     </div>
   </div>
 </footer>
@@ -1155,32 +1168,78 @@ window.openArt=function(id){
   } else {
     bodyEl.innerHTML='';
   }
-  // Share buttons — use clean domain URL
-  const artUrl=SITE_URL+'/?art='+id;
+  // Share buttons — clean URL (no Firebase ID), update OG tags for Facebook image
+  const slug=encodeURIComponent((a.title||'article').toLowerCase().replace(/\s+/g,'-').replace(/[^\w\u0600-\u06FF\u0780-\u07BF-]/g,'').slice(0,60));
+  const artUrl=SITE_URL+(slug?'/'+slug:'/');
   const shareUrl=encodeURIComponent(artUrl);
   const shareTitle=encodeURIComponent(a.title||'');
+  const shareImg=a.imageUrl||'';
+  const shareDesc=encodeURIComponent(a.summary||a.title||'');
+
+  // Update Open Graph meta tags so Facebook/Twitter scraper picks up the image
+  const setMeta=(id,val)=>{const el=document.getElementById(id);if(el)el.setAttribute('content',val);};
+  setMeta('ogTitle', a.title||'');
+  setMeta('ogDesc', a.summary||a.title||'');
+  setMeta('ogImage', shareImg);
+  setMeta('ogUrl', artUrl);
+  setMeta('ogType', 'article');
+  setMeta('twTitle', a.title||'');
+  setMeta('twDesc', a.summary||'');
+  setMeta('twImage', shareImg);
+  if(document.getElementById('pageTitle'))document.getElementById('pageTitle').textContent=a.title||'';
+
+  // Facebook share — uses og:image automatically if page has OG tags
+  // For direct image preview, we pass the image URL as a param too
+  const fbUrl=shareImg
+    ? `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&picture=${encodeURIComponent(shareImg)}&title=${shareTitle}&description=${shareDesc}`
+    : `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+
   document.getElementById('amShare').innerHTML=`
-    <span class="share-lbl">Share</span>
+    <span class="share-lbl">ހWCWCWC</span>
     <div class="share-btns">
-      <a class="sh-btn sh-fb" href="https://www.facebook.com/sharer/sharer.php?u=${shareUrl}" target="_blank" rel="noopener">f Facebook</a>
-      <a class="sh-btn sh-tw" href="https://twitter.com/intent/tweet?text=${shareTitle}&url=${shareUrl}" target="_blank" rel="noopener">𝕏 Twitter</a>
-      <a class="sh-btn sh-wa" href="https://wa.me/?text=${shareTitle}%20${shareUrl}" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="sh-btn sh-tg" href="https://t.me/share/url?url=${shareUrl}&text=${shareTitle}" target="_blank" rel="noopener">✈ Telegram</a>
-      <button class="sh-btn sh-cp" id="cpBtn" onclick="copyLink('${id}')">🔗 Copy Link</button>
+      <a class="sh-btn sh-fb" href="${fbUrl}" target="_blank" rel="noopener" onclick="return fbShare('${shareUrl}','${encodeURIComponent(shareImg)}','${shareTitle}','${shareDesc}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+      <a class="sh-btn sh-tw" href="https://twitter.com/intent/tweet?text=${shareTitle}&url=${shareUrl}" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Twitter
+      </a>
+      <a class="sh-btn sh-wa" href="https://wa.me/?text=${shareTitle}%20${shareUrl}" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a class="sh-btn sh-tg" href="https://t.me/share/url?url=${shareUrl}&text=${shareTitle}" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram
+      </a>
+      <button class="sh-btn sh-cp" id="cpBtn" onclick="copyLink('${slug||id}','${artUrl}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Copy
+      </button>
     </div>`;
   document.getElementById('amod').classList.add('op');
   document.body.style.overflow='hidden';
 };
-window.copyLink=function(id){
-  const url=SITE_URL+'/?art='+id;
+// Facebook share with image via popup
+window.fbShare=function(encodedUrl,encodedImg,encodedTitle,encodedDesc){
+  // Open Facebook share dialog in popup window for better UX
+  const url='https://www.facebook.com/sharer/sharer.php?u='+encodedUrl
+    +(encodedImg?'&picture='+encodedImg:'')
+    +(encodedTitle?'&title='+encodedTitle:'')
+    +(encodedDesc?'&description='+encodedDesc:'');
+  window.open(url,'_blank','width=600,height=500,scrollbars=yes,resizable=yes');
+  return false; // prevent default link navigation
+};
+window.copyLink=function(slugOrId,fullUrl){
+  const url=fullUrl||(SITE_URL+'/'+(slugOrId||''));
   navigator.clipboard?.writeText(url).then(()=>{
     const btn=document.getElementById('cpBtn');
-    if(btn){btn.textContent='✅ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='🔗 Copy Link';btn.classList.remove('copied');},2000);}
+    if(btn){btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied!';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Copy';btn.classList.remove('copied');},2200);}
   }).catch(()=>{
-    // Fallback
     const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
     const btn=document.getElementById('cpBtn');
-    if(btn){btn.textContent='✅ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='🔗 Copy Link';btn.classList.remove('copied');},2000);}
+    if(btn){btn.innerHTML='✅ Copied!';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='🔗 Copy';btn.classList.remove('copied');},2200);}
   });
 };
 window.openVid=function(id){
@@ -1441,15 +1500,20 @@ function fdFull(ts){
 function fd(ts){return timeAgo(ts);}
 function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// ── DEEPLINK: open article from URL ?art=ID ──
+// ── DEEPLINK: open article from URL slug or ?art=ID ──
 (function(){
   const params=new URLSearchParams(window.location.search);
   const artId=params.get('art');
-  if(!artId)return;
+  // Also check pathname slug (e.g. /my-article-title)
+  const pathSlug=window.location.pathname.replace(/^\/+/,'').replace(/-/g,' ').toLowerCase();
+  if(!artId&&!pathSlug)return;
   let tries=0;
   const wait=setInterval(()=>{
     tries++;
-    if(arts.find(a=>a.id===artId)){clearInterval(wait);openArt(artId);}
+    let found=null;
+    if(artId)found=arts.find(a=>a.id===artId);
+    if(!found&&pathSlug)found=arts.find(a=>(a.title||'').toLowerCase().includes(pathSlug.slice(0,20)));
+    if(found){clearInterval(wait);openArt(found.id);}
     if(tries>20)clearInterval(wait);
   },400);
 })();
