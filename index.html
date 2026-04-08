@@ -563,7 +563,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
   <div class="sm-body">
     <span class="sm-sec-lbl">ދާއިރާ</span>
     <div class="sm-cat-grid" id="smCatGrid">
-      <div class="sm-cat-item on" data-cat="" onclick="setF(null,this);closeSide()"><span class="ci">🏠</span>ހުރިހާ</div>
+      <div class="sm-cat-item on" data-cat="" onclick="setF(null,this);closeSide()"><span class="ci">🏠</span>ހؤمH</div>
     </div>
   </div>
   <div class="sm-foot">
@@ -712,7 +712,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
         <a onclick="">Contact Us</a>
         <a onclick="">Privacy Policy</a>
       </div>
-      <p class="ft-copy">&copy; 2026 All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
     </div>
   </div>
 </footer>
@@ -783,12 +783,8 @@ const BASE={news:'ހަބަރު',sports:'ކުޅިވަރު',world:'ބޭރު ދުނ
 const CPFX={news:'cat-news',sports:'cat-sports',world:'cat-world',politics:'cat-politics',economy:'cat-economy',report:'cat-report',lifestyle:'cat-lifestyle'};
 let CAT={...BASE};
 // ── SITE URL for social sharing ──
-let SITE_URL=(function(){
-  const proto=window.location.protocol;
-  const host=window.location.hostname;
-  if(proto==='file:'||!host||host==='localhost'||host==='127.0.0.1')return'https://feeali.com';
-  return window.location.protocol+'//'+window.location.host;
-})();
+// ── SITE URL ── always www.feeali.com for sharing
+const SITE_URL = 'https://www.feeali.com';
 const SICONS={facebook:'🇫',twitter:'𝕏',instagram:'📷',youtube:'▶',tiktok:'♪',telegram:'✈'};
 const SCLS={facebook:'fb',twitter:'tw',instagram:'ig',youtube:'yt',tiktok:'tk',telegram:'tg'};
 const SLBL={facebook:'Facebook',twitter:'X',instagram:'Instagram',youtube:'YouTube',tiktok:'TikTok',telegram:'Telegram'};
@@ -1191,8 +1187,10 @@ window.openArt=function(id){
     bodyEl.innerHTML='';
   }
   // ── SHARE — store data, render buttons, share on click ──
+  // Use article ID encoded simply — no Firebase format visible, always www.feeali.com
+  const _artNum = btoa(id).replace(/[^a-z0-9]/gi,'').slice(0,8); // short opaque ID
   window._shareData = {
-    url:   'https://feeali.com/' + ((a.title||'news').trim().replace(/\s+/g,'-').replace(/[^\u0600-\u06FF\u0780-\u07BF\w-]/g,'').slice(0,60) || 'news'),
+    url:   'https://www.feeali.com/news/' + _artNum,
     img:   (a.imageUrl||'').trim(),
     title: (a.title||'').trim(),
     desc:  (a.summary||a.title||'').trim()
@@ -1228,7 +1226,7 @@ window.openArt=function(id){
 // ── doShare: all platforms, called on button click ──
 window.doShare = function(platform) {
   const d = window._shareData || {};
-  const url   = d.url   || 'https://feeali.com';
+  const url   = d.url   || 'https://www.feeali.com';
   const img   = d.img   || '';
   const title = d.title || '';
   const desc  = d.desc  || '';
