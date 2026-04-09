@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title id="pageTitle">feeali.com</title>
+<title id="pageTitle">ފީއަލި</title>
 <meta name="description" content="ފީއަލި — ދިWCWCWC ހWCWCWC" id="metaDesc">
 <!-- Open Graph for Facebook / social sharing with image -->
 <meta property="og:type" content="website" id="ogType">
@@ -275,8 +275,8 @@ body.dark .topics{background:var(--dm-bg2)}
 .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .gal-card{border-radius:var(--r);overflow:hidden;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(27,182,141,.12);transition:.25s;display:flex;flex-direction:column}
 .gal-card:hover{transform:translateY(-7px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(27,182,141,.4);border-color:rgba(27,182,141,.5)}
-.gal-card-img{aspect-ratio:4/3;overflow:hidden;position:relative;background:#0A1410}
-.gal-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.gal-card-img{aspect-ratio:4/3;overflow:hidden;position:relative;background:#0A1410;min-height:120px}
+.gal-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .45s;display:block;min-height:80px}
 .gal-card:hover .gal-card-img img{transform:scale(1.09)}
 .gal-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,25,16,.85) 0%,transparent 60%);opacity:0;transition:opacity .25s;display:flex;align-items:center;justify-content:center}
 .gal-card:hover .gal-card-overlay{opacity:1}
@@ -295,9 +295,33 @@ body.dark .topics{background:var(--dm-bg2)}
   font-size:11px;font-weight:700;padding:4px 10px;
   border-radius:10px;font-family:var(--fn);
   border:1px solid rgba(27,182,141,.3);width:fit-content;
-  direction:rtl;
+  direction:rtl;cursor:pointer;transition:.15s;
 }
+.gal-album-name:hover{background:rgba(27,182,141,.4);border-color:var(--pri);color:#fff}
 .gal-album-name svg{flex-shrink:0;opacity:.8}
+/* ── FOLDER CARDS ── */
+.gal-folder-card{
+  border-radius:var(--rl);overflow:hidden;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid rgba(27,182,141,.15);
+  transition:.25s;display:flex;flex-direction:column;
+}
+.gal-folder-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.6),0 0 0 1px rgba(27,182,141,.5);border-color:rgba(27,182,141,.6)}
+.gal-folder-img{aspect-ratio:4/3;overflow:hidden;position:relative;background:#0A1410}
+.gal-folder-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block}
+.gal-folder-card:hover .gal-folder-img img{transform:scale(1.06)}
+.gal-folder-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;opacity:.3}
+.gal-folder-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,25,16,.88) 0%,rgba(5,25,16,.2) 60%,transparent 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;opacity:0;transition:opacity .25s;
+}
+.gal-folder-card:hover .gal-folder-overlay{opacity:1}
+.gal-folder-icon{font-size:36px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.gal-folder-count{font-size:12px;font-weight:700;color:rgba(255,255,255,.9);font-family:var(--fn);background:rgba(27,182,141,.3);padding:3px 12px;border-radius:20px;border:1px solid rgba(27,182,141,.4)}
+.gal-folder-info{padding:13px 15px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gal-folder-name{font-family:var(--dv);font-size:15px;font-weight:700;color:#fff;direction:rtl;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gal-folder-meta{font-size:11px;color:rgba(148,244,219,.6);font-family:var(--fn);flex-shrink:0}
 /* ══ LIGHTBOX ══ */
 #lb{display:none;position:fixed;inset:0;background:rgba(5,25,16,.97);z-index:600;flex-direction:column;overflow:hidden}
 #lb.op{display:flex}
@@ -726,7 +750,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
         <a onclick="">Contact Us</a>
         <a onclick="">Privacy Policy</a>
       </div>
-      <p class="ft-copy">&copy; 2026@ All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
     </div>
   </div>
 </footer>
@@ -753,16 +777,16 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
 <!-- FULL GALLERY VIEWER -->
 <div id="lb">
   <!-- Top bar -->
-  <div class="lb-bar">
-    <div>
-      <div class="lb-bar-title">ލެންސް — ގެލަރީ</div>
+    <div class="lb-bar">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="lb-bar-title" id="lbBarTitle">ލެންސް — ގެލަރީ</div>
       <div class="lb-bar-count" id="lbCount">0 photos</div>
     </div>
     <div class="lb-bar-r">
       <button class="lb-btn" onclick="closeLb()">✕ Close</button>
     </div>
   </div>
-  <!-- Grid of all photos -->
+  <!-- Grid<!-- Grid of all photos -->
   <div id="lbGrid"></div>
 
   <!-- Single image view (shown when a thumb is clicked) -->
@@ -939,11 +963,67 @@ onValue(ref(db,'videos'),s=>{
   vids.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   renderVids();
 });
-onValue(ref(db,'gallery'),s=>{
-  gal=[];
-  if(s.exists())s.forEach(c=>gal.push({id:c.key,...c.val()}));
-  renderGal();
-});
+// Gallery: use shallow=true REST API to get keys without downloading image data
+// Then fetch each image individually by key
+(function loadGallery(){
+  var DB_URL='https://faafupolicerunning-default-rtdb.firebaseio.com';
+  function fetchKeys(){
+    // Use REST API with shallow=true — returns only keys, NO image data
+    fetch(DB_URL+'/gallery.json?shallow=true')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data||typeof data!=='object'){gal=[];renderGal();return;}
+        var keys=Object.keys(data);
+        if(!keys.length){gal=[];renderGal();return;}
+        gal=new Array(keys.length);
+        var loaded=0;
+        keys.forEach(function(key,idx){
+          // Fetch each image node individually
+          fetch(DB_URL+'/gallery/'+key+'.json')
+            .then(function(r){return r.json();})
+            .then(function(val){
+              if(val&&val.imageUrl) gal[idx]={id:key,...val};
+              loaded++;
+              if(loaded===keys.length){
+                gal=gal.filter(Boolean);
+                renderGal();
+              }
+            })
+            .catch(function(){
+              loaded++;
+              if(loaded===keys.length){gal=gal.filter(Boolean);renderGal();}
+            });
+        });
+      })
+      .catch(function(){gal=[];renderGal();});
+  }
+  // Initial load
+  fetchKeys();
+  // Re-fetch when gallery changes (poll every 5s as fallback, or use onValue for keys only)
+  onValue(ref(db,'gallery'),function(s){
+    // onValue gives us the snapshot — but we only read keys to avoid size limit
+    var keys=[];
+    if(s.exists()) s.forEach(function(c){keys.push(c.key);});
+    if(!keys.length){gal=[];renderGal();return;}
+    gal=new Array(keys.length);
+    var loaded=0;
+    keys.forEach(function(key,idx){
+      fetch(DB_URL+'/gallery/'+key+'.json')
+        .then(function(r){return r.json();})
+        .then(function(val){
+          if(val&&val.imageUrl) gal[idx]={id:key,...val};
+          loaded++;
+          if(loaded===keys.length){gal=gal.filter(Boolean);renderGal();}
+        })
+        .catch(function(){
+          loaded++;
+          if(loaded===keys.length){gal=gal.filter(Boolean);renderGal();}
+        });
+    });
+  },{onlyOnce:true}); // only once — we manage updates via fetchKeys
+  // Listen for changes using shallow listener
+  window._galRefreshInterval=setInterval(fetchKeys,8000);
+})();
 onValue(ref(db,'settings/social'),s=>{
   socs=[];
   if(s.exists())s.forEach(c=>{const v=c.val();if(v&&v.url)socs.push({id:c.key,...v});});
@@ -1062,56 +1142,207 @@ function renderVids(){
 }
 
 function renderGal(){
-  const g=document.getElementById('galGrid');
-  if(!gal.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div>ގ ÑÑÑÑÑ</div>';return;}
-  const cats=new Set();
-  gal.forEach(i=>{if(i.category&&i.category.trim())cats.add(i.category.trim());});
-  const filtersEl=document.getElementById('galFilters');
-  const showAllBtn=document.getElementById('galShowAll');
-  if(cats.size>0){
-    filtersEl.style.display='flex';
-    showAllBtn.style.display='inline-flex';
-    filtersEl.innerHTML='<span class="gal-filter on" onclick="filterGallery(null,this)">ހުރިހާ</span>'
-      + [...cats].map(cat => '<span class="gal-filter" onclick="filterGallery(\'' + e(cat) + '\',this)">' + e(cat) + '</span>').join('');
-  } else {
-    filtersEl.style.display='none';
-    showAllBtn.style.display='none';
+  var g=document.getElementById('galGrid');
+  if(!gal.length){
+    g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div>ÑÑÑÑç ÑÑÑÑÑ</div>';
+    return;
   }
-  renderGalGrid(gal);
+
+  // Group images by album/category
+  var albumMap={};   // albumName -> [images]
+  var noAlbum=[];
+  gal.forEach(function(i){
+    var name=(i.category||'').trim();
+    if(name){
+      if(!albumMap[name]) albumMap[name]=[];
+      albumMap[name].push(i);
+    } else {
+      noAlbum.push(i);
+    }
+  });
+
+  var albumNames=Object.keys(albumMap);
+
+  // Hide old filter tabs and "All" button — folders replace them
+  var filtersEl=document.getElementById('galFilters');
+  var showAllBtn=document.getElementById('galShowAll');
+  if(filtersEl) filtersEl.style.display='none';
+  if(showAllBtn) showAllBtn.style.display='none';
+
+  // Clear grid
+  while(g.firstChild) g.removeChild(g.firstChild);
+
+  // If only unalbummed images exist — show them directly
+  if(!albumNames.length){
+    renderGalGrid(noAlbum);
+    return;
+  }
+
+  // Show album folder cards
+  albumNames.forEach(function(name){
+    var photos=albumMap[name];
+    var cover=photos[0]; // first photo as cover
+
+    var card=document.createElement('div');
+    card.className='gal-folder-card';
+    card.onclick=function(){openAlbum(name);};
+
+    // Cover image container
+    var imgWrap=document.createElement('div');
+    imgWrap.className='gal-folder-img';
+
+    if(cover&&cover.imageUrl){
+      var img=document.createElement('img');
+      img.alt=name;
+      imgWrap.appendChild(img);
+      img.src=cover.imageUrl; // set after append
+    } else {
+      imgWrap.innerHTML='<div class="gal-folder-placeholder">📁</div>';
+    }
+
+    // Overlay with folder icon + count
+    var overlay=document.createElement('div');
+    overlay.className='gal-folder-overlay';
+    overlay.innerHTML=
+      '<div class="gal-folder-icon">📁</div>'
+      +'<div class="gal-folder-count">'+photos.length+' photos</div>';
+    imgWrap.appendChild(overlay);
+
+    // Info row
+    var info=document.createElement('div');
+    info.className='gal-folder-info';
+    info.innerHTML='<div class="gal-folder-name">'+e(name)+'</div>'
+      +'<div class="gal-folder-meta">'+photos.length+' ÑÑÑÑç</div>';
+
+    card.appendChild(imgWrap);
+    card.appendChild(info);
+    g.appendChild(card);
+  });
+
+  // Also show uncategorised photos if any
+  if(noAlbum.length){
+    var sep=document.createElement('div');
+    sep.style.cssText='grid-column:1/-1;color:rgba(255,255,255,.35);font-size:12px;font-family:var(--fn);padding:8px 0 4px';
+    sep.textContent='Other photos';
+    g.appendChild(sep);
+    noAlbum.forEach(function(img,i){
+      var card2=document.createElement('div');
+      card2.className='gal-card';
+      (function(idx,arr){
+        card2.onclick=function(){
+          galLbImgs=arr.map(function(x){return{src:x.imageUrl||'',cap:x.caption||'',cat:x.category||''};});
+          openLb(idx);
+        };
+      })(i,noAlbum);
+      card2.innerHTML='<div class="gal-card-img"><img alt=""></div>';
+      g.appendChild(card2);
+      card2.querySelector('img').src=img.imageUrl||'';
+    });
+  }
 }
 
 function renderGalGrid(items){
-  const g=document.getElementById('galGrid');
-  galLbImgs=items.map(i=>({src:i.imageUrl||i.url||'',cap:i.caption||'',cat:i.category||''}));
-  if(!items.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div></div>';return;}
-  g.innerHTML=items.map(function(img,i){
-    const src=e(img.imageUrl||img.url||'');
-    const cap=(img.caption||'').trim();
-    const albumName=(img.category||'').trim();
-    return '<div class="gal-card" onclick="openLb('+i+')">'
-      +'<div class="gal-card-img">'
-        +'<img src="'+src+'" loading="lazy" alt="'+e(cap||albumName)+'">'
-        +'<div class="gal-card-overlay"><div class="gal-card-zoom">🔍</div></div>'
-        +'<div class="gal-card-num">'+(i+1)+' / '+items.length+'</div>'
-      +'</div>'
-      +'<div class="gal-card-body">'
-        +(albumName
-          ? '<div class="gal-album-name">'
-              +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'
-              +e(albumName)
-            +'</div>'
-          : '')
-        +(cap ? '<div class="gal-card-cap">'+e(cap)+'</div>' : '')
-      +'</div>'
-    +'</div>';
-  }).join('');
+  var g=document.getElementById('galGrid');
+  if(!g)return;
+  // Update lightbox image list
+  galLbImgs=[];
+  for(var x=0;x<items.length;x++){
+    galLbImgs.push({src:items[x].imageUrl||items[x].url||'',cap:items[x].caption||'',cat:items[x].category||''});
+  }
+  if(!items.length){
+    g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div>ÑÑÑÑç ÑÑÑÑÑ</div>';
+    return;
+  }
+  // Remove all existing cards
+  while(g.firstChild) g.removeChild(g.firstChild);
+  // Build each card using same pattern as admin (proven working)
+  for(var i=0;i<items.length;i++){
+    (function(img, idx){
+      var cap=(img.caption||'').trim();
+      var albumName=(img.category||'').trim();
+      var src=img.imageUrl||img.url||'';
+
+      var card=document.createElement('div');
+      card.className='gal-card';
+      card.onclick=function(){openLb(idx);};
+
+      // Build inner HTML without src
+      var inner='<div class="gal-card-img">';
+      inner+='<img alt="'+e(cap||albumName)+'" style="width:100%;height:100%;object-fit:cover;display:block">';
+      inner+='<div class="gal-card-overlay"><div class="gal-card-zoom">🔍</div></div>';
+      inner+='<div class="gal-card-num">'+(idx+1)+' / '+items.length+'</div>';
+      inner+='</div>';
+      inner+='<div class="gal-card-body">';
+      if(albumName){
+        inner+='<div class="gal-album-name" onclick="event.stopPropagation();openAlbum(\''+albumName.replace(/'/g,"\\'")+'\')">';
+        inner+='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
+        inner+=e(albumName)+'</div>';
+      }
+      if(cap) inner+='<div class="gal-card-cap">'+e(cap)+'</div>';
+      inner+='</div>';
+
+      card.innerHTML=inner;
+
+      // Append card to grid FIRST
+      g.appendChild(card);
+
+      // THEN set image src (after card is in DOM)
+      if(src){
+        var imgEl=card.querySelector('.gal-card-img img');
+        if(imgEl) imgEl.src=src;
+      }
+    })(items[i], i);
+  }
 }
 
 window.filterGallery=function(cat,el){
   document.querySelectorAll('.gal-filter').forEach(function(t){t.classList.remove('on');});
   if(el)el.classList.add('on');
-  var filtered=cat?gal.filter(function(i){return(i.category||'').trim()===cat;}):gal;
-  renderGalGrid(filtered);
+  if(cat){
+    // Album tab clicked → open album lightbox
+    openAlbum(cat);
+  } else {
+    // "All" clicked → just show all in grid
+    renderGalGrid(gal);
+  }
+};
+
+// Click folder card → open lightbox with ALL images from that album
+window.openAlbum=function(albumName){
+  var filtered=gal.filter(function(i){
+    return(i.category||'').trim()===albumName.trim();
+  });
+  if(!filtered.length)return;
+
+  // Set galLbImgs to this album's images
+  galLbImgs=filtered.map(function(i){
+    return{src:i.imageUrl||i.url||'',cap:i.caption||'',cat:i.category||''};
+  });
+
+  // Build lightbox grid
+  lbIdx=0;
+  var grid=document.getElementById('lbGrid');
+  grid.innerHTML='';
+  galLbImgs.forEach(function(img,i){
+    var thumb=document.createElement('div');
+    thumb.className='lb-thumb'+(i===0?' active':'');
+    thumb.id='lbt'+i;
+    (function(idx){thumb.onclick=function(){openSingle(idx);};})(i);
+    var tImg=document.createElement('img');
+    tImg.alt=''; tImg.draggable=false;
+    tImg.oncontextmenu=function(){return false;};
+    thumb.appendChild(tImg);
+    grid.appendChild(thumb);
+    tImg.src=img.src;
+  });
+
+  // Show album name as title
+  var titleEl=document.getElementById('lbBarTitle');
+  if(titleEl) titleEl.textContent=albumName;
+  document.getElementById('lbCount').textContent=filtered.length+' photos';
+  document.getElementById('lb').classList.add('op');
+  document.body.style.overflow='hidden';
+  openSingle(0);
 };
 
 function renderSoc(){
@@ -1284,28 +1515,39 @@ window.openLb=function(startIdx){
   if(!galLbImgs.length)return;
   lbIdx=startIdx||0;
 
-  // Build the grid with all photos
+  // Build grid using DOM — never put base64 src in innerHTML
   const grid=document.getElementById('lbGrid');
-  grid.innerHTML=galLbImgs.map((img,i)=>`
-    <div class="lb-thumb${i===lbIdx?' active':''}" id="lbt${i}" onclick="openSingle(${i})">
-      <img src="${e(img.src)}" loading="lazy" alt="" draggable="false" oncontextmenu="return false">
-      ${img.cat?`<span class="lb-cat-tag">${e(img.cat)}</span>`:''}
-    </div>`).join('');
+  grid.innerHTML='';
+  galLbImgs.forEach(function(img,i){
+    const thumb=document.createElement('div');
+    thumb.className='lb-thumb'+(i===lbIdx?' active':'');
+    thumb.id='lbt'+i;
+    thumb.onclick=function(){openSingle(i);};
+    const tImg=document.createElement('img');
+    tImg.alt='';
+    tImg.draggable=false;
+    tImg.oncontextmenu=function(){return false;};
+    thumb.appendChild(tImg);
+    if(img.cat){
+      const tag=document.createElement('span');
+      tag.className='lb-cat-tag';
+      tag.textContent=img.cat;
+      thumb.appendChild(tag);
+    }
+    grid.appendChild(thumb);
+    // Set src after appending to DOM
+    tImg.src=img.src;
+  });
 
-  // Count
   document.getElementById('lbCount').textContent=galLbImgs.length+' photos';
-
-  // Open viewer
   document.getElementById('lb').classList.add('op');
   document.body.style.overflow='hidden';
 
-  // Scroll to the clicked image
-  setTimeout(()=>{
+  setTimeout(function(){
     const el=document.getElementById('lbt'+lbIdx);
     if(el)el.scrollIntoView({block:'center',behavior:'smooth'});
   },80);
 
-  // Auto-open single view for the clicked image
   openSingle(lbIdx);
 };
 
