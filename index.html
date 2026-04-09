@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title id="pageTitle">ފީއަލި</title>
+<title id="pageTitle">feeali.com</title>
 <meta name="description" content="ފީއަލި — ދިWCWCWC ހWCWCWC" id="metaDesc">
 <!-- Open Graph for Facebook / social sharing with image -->
 <meta property="og:type" content="website" id="ogType">
@@ -288,6 +288,16 @@ body.dark .topics{background:var(--dm-bg2)}
 .gal-card-cat span{width:5px;height:5px;border-radius:50%;background:var(--pri2);flex-shrink:0}
 .gal-card-cap{font-family:var(--dv);font-size:14px;line-height:1.7;color:rgba(255,255,255,.65);text-align:justify;flex:1}
 .gal-card-cap.empty{color:rgba(255,255,255,.2);font-family:var(--fn);font-size:12px;font-style:italic}
+/* Gallery album name (event name under photo) */
+.gal-album-name{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(27,182,141,.2);color:var(--pri2);
+  font-size:11px;font-weight:700;padding:4px 10px;
+  border-radius:10px;font-family:var(--fn);
+  border:1px solid rgba(27,182,141,.3);width:fit-content;
+  direction:rtl;
+}
+.gal-album-name svg{flex-shrink:0;opacity:.8}
 /* ══ LIGHTBOX ══ */
 #lb{display:none;position:fixed;inset:0;background:rgba(5,25,16,.97);z-index:600;flex-direction:column;overflow:hidden}
 #lb.op{display:flex}
@@ -637,7 +647,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
 
 <div class="wrap">
   <div class="hero-layout">
-    <div id="hmain"><div class="hmain"><div class="hempty"><div style="font-size:36px"></div>ލޯޑްވަނީ...</div></div></div>
+    <div id="hmain"><div class="hmain"><div class="hempty"><div style="font-size:36px">📰</div>ލޯޑްވަނީ...</div></div></div>
     <div class="hside" id="hside"></div>
   </div>
 </div>
@@ -716,7 +726,7 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
         <a onclick="">Contact Us</a>
         <a onclick="">Privacy Policy</a>
       </div>
-      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026@ All rights reserved.</p>
     </div>
   </div>
 </footer>
@@ -758,12 +768,11 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
   <!-- Single image view (shown when a thumb is clicked) -->
   <div id="lbSingle">
     <div class="lb-single-bar">
-      <button class="lb-single-back" onclick="closeSingle()">‹</button>
+      <button class="lb-btn lb-btn-close" onclick="closeSingle()">‹ Back</button>
       <div class="lb-single-info">
         <div class="lb-single-cap" id="lbSingleCap"></div>
         <div class="lb-single-meta" id="lbSingleMeta"></div>
       </div>
-      <button class="lb-btn" onclick="downloadWatermarked()">⬇ Download</button>
     </div>
     <div class="lb-single-main">
       <img id="lbImg" src="" alt="" draggable="false" oncontextmenu="return false">
@@ -1004,7 +1013,7 @@ function renderLat(list){
 
 function renderRep(list){
   const g=document.getElementById('repGrid');
-  if(!list.length){g.innerHTML=`<div class="empty" style="color:rgba(255,255,255,.3)"><div class="ei"></div></div>`;return;}
+  if(!list.length){g.innerHTML=`<div class="empty" style="color:rgba(255,255,255,.3)"><div class="ei">📋</div></div>`;return;}
   const[f,...rest]=list;
   g.innerHTML=`
     <div class="fhero" onclick="openArt('${f.id}')">
@@ -1054,20 +1063,16 @@ function renderVids(){
 
 function renderGal(){
   const g=document.getElementById('galGrid');
-  if(!gal.length){g.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div>ގެލަރީ ފޮޓޯ ނެތް</div>`;return;}
-  // Build category list from gallery items
+  if(!gal.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div>ގ ÑÑÑÑÑ</div>';return;}
   const cats=new Set();
   gal.forEach(i=>{if(i.category&&i.category.trim())cats.add(i.category.trim());});
-  // Show filter bar if categories exist
   const filtersEl=document.getElementById('galFilters');
   const showAllBtn=document.getElementById('galShowAll');
   if(cats.size>0){
     filtersEl.style.display='flex';
     showAllBtn.style.display='inline-flex';
-    filtersEl.innerHTML=[
-      `<span class="gal-filter on" onclick="filterGallery(null,this)">ހުރިހާ</span>`,
-      ...[...cats].map(cat=>`<span class="gal-filter" onclick="filterGallery('${e(cat)}',this)">${e(cat)}</span>`)
-    ].join('');
+    filtersEl.innerHTML='<span class="gal-filter on" onclick="filterGallery(null,this)">ހުރިހާ</span>'
+      + [...cats].map(cat => '<span class="gal-filter" onclick="filterGallery(\'' + e(cat) + '\',this)">' + e(cat) + '</span>').join('');
   } else {
     filtersEl.style.display='none';
     showAllBtn.style.display='none';
@@ -1078,34 +1083,34 @@ function renderGal(){
 function renderGalGrid(items){
   const g=document.getElementById('galGrid');
   galLbImgs=items.map(i=>({src:i.imageUrl||i.url||'',cap:i.caption||'',cat:i.category||''}));
-  if(!items.length){
-    g.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div>ފޮޓޯ ނެތް</div>`;
-    return;
-  }
-  g.innerHTML=items.map((img,i)=>{
+  if(!items.length){g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🖼️</div></div>';return;}
+  g.innerHTML=items.map(function(img,i){
     const src=e(img.imageUrl||img.url||'');
-    const cap=img.caption||img.title||'';
-    const cat=img.category||'';
-    return`<div class="gal-card" onclick="openLb(${i})">
-      <div class="gal-card-img">
-        <img src="${src}" loading="lazy" alt="${e(cap)}">
-        <div class="gal-card-overlay">
-          <div class="gal-card-zoom">🔍</div>
-        </div>
-        <div class="gal-card-num">${i+1} / ${items.length}</div>
-      </div>
-      <div class="gal-card-body">
-        ${cat?`<div class="gal-card-cat"><span></span>${e(cat)}</div>`:''}
-        <div class="gal-card-cap${cap?'':' empty'}">${cap?e(cap):'ކެޕްޝަން ނެތް'}</div>
-      </div>
-    </div>`;
+    const cap=(img.caption||'').trim();
+    const albumName=(img.category||'').trim();
+    return '<div class="gal-card" onclick="openLb('+i+')">'
+      +'<div class="gal-card-img">'
+        +'<img src="'+src+'" loading="lazy" alt="'+e(cap||albumName)+'">'
+        +'<div class="gal-card-overlay"><div class="gal-card-zoom">🔍</div></div>'
+        +'<div class="gal-card-num">'+(i+1)+' / '+items.length+'</div>'
+      +'</div>'
+      +'<div class="gal-card-body">'
+        +(albumName
+          ? '<div class="gal-album-name">'
+              +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'
+              +e(albumName)
+            +'</div>'
+          : '')
+        +(cap ? '<div class="gal-card-cap">'+e(cap)+'</div>' : '')
+      +'</div>'
+    +'</div>';
   }).join('');
 }
 
 window.filterGallery=function(cat,el){
-  document.querySelectorAll('.gal-filter').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.gal-filter').forEach(function(t){t.classList.remove('on');});
   if(el)el.classList.add('on');
-  const filtered=cat?gal.filter(i=>(i.category||'').trim()===cat):gal;
+  var filtered=cat?gal.filter(function(i){return(i.category||'').trim()===cat;}):gal;
   renderGalGrid(filtered);
 };
 
