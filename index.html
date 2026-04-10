@@ -20,7 +20,7 @@
 <meta name="twitter:image" content="" id="twImage">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;scroll-behavior:smooth}
 :root{
   /* Javiyani primary green */
@@ -419,35 +419,80 @@ body.dark .amod-box{background:var(--dm-bg2)}
 .cat-economy{background:#E8FBF5;color:#065F46}.cat-report{background:#FEF3C7;color:#92400E}
 .cat-lifestyle{background:#FFF1F2;color:#9F1239}
 /* ══ SHARE ══ */
-/* ══ SHARE SHEET ══ */
-.share-bar{margin-top:24px;padding-top:20px;border-top:1px dashed var(--bdr2)}
-.share-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.share-lbl{font-size:12px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:1.5px;font-family:var(--fn);display:flex;align-items:center;gap:6px}
-.share-lbl::before{content:'';width:3px;height:14px;background:var(--pri);border-radius:2px;display:block}
-.share-url-box{display:flex;align-items:center;gap:8px;background:var(--pril);border:1px dashed var(--bdr2);border-radius:10px;padding:9px 13px;margin-bottom:16px}
-.share-url-txt{flex:1;font-size:12px;color:var(--pri);font-family:var(--fn);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr}
-.share-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-@media(max-width:480px){.share-btns{grid-template-columns:repeat(3,1fr)}}
-.sh-btn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;padding:14px 8px;border-radius:14px;
-  font-size:11px;font-weight:700;cursor:pointer;border:none;
-  transition:all .2s ease;font-family:var(--fn);
-  color:#fff;position:relative;overflow:hidden;
+/* ══ VIDEO LIGHTBOX ══ */
+#vidLb.op{display:flex!important}
+.vid-thumb{
+  display:flex;flex-direction:column;flex-shrink:0;
+  width:120px;border-radius:8px;overflow:hidden;
+  cursor:pointer;border:2px solid transparent;
+  background:rgba(255,255,255,.06);transition:.18s;
 }
-.sh-btn:active{transform:scale(.94)}
-.sh-btn:hover{transform:translateY(-3px);filter:brightness(1.08)}
-.sh-btn svg{flex-shrink:0}
-.sh-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.25);margin-bottom:2px}
-/* Platform colours */
-.sh-fb{background:linear-gradient(145deg,#1877F2,#0e5cc5);box-shadow:0 6px 18px rgba(24,119,242,.4)}
-.sh-wa{background:linear-gradient(145deg,#25D366,#128C7E);box-shadow:0 6px 18px rgba(37,211,102,.4)}
-.sh-tg{background:linear-gradient(145deg,#2AABEE,#1878b4);box-shadow:0 6px 18px rgba(42,171,238,.4)}
-.sh-tw{background:linear-gradient(145deg,#222,#000);box-shadow:0 6px 18px rgba(0,0,0,.35)}
-.sh-cp{background:linear-gradient(145deg,var(--pri),var(--prid));box-shadow:0 6px 18px rgba(27,182,141,.4)}
-.sh-cp.copied{background:linear-gradient(145deg,#059669,#047857)!important}
-body.dark .share-url-box{background:var(--dm-bg3);border-color:var(--dm-bdr)}
-body.dark .share-url-txt{color:var(--pri2)}
+.vid-thumb:hover{border-color:rgba(27,182,141,.5)}
+.vid-thumb.active{border-color:var(--pri);box-shadow:0 0 0 2px rgba(27,182,141,.3)}
+.vid-thumb img{width:120px;height:68px;object-fit:cover;display:block;flex-shrink:0}
+.vid-thumb-num{display:none}
+.vid-thumb-ttl{
+  padding:5px 7px;font-family:var(--dv);font-size:11px;
+  color:rgba(255,255,255,.7);direction:rtl;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  line-height:1.4;flex:1;
+}
+.share-bar{margin-top:20px;padding-top:18px;border-top:1px dashed var(--bdr2)}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap}
+.sh-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 14px;border-radius:10px;
+  font-size:12px;font-weight:600;cursor:pointer;border:none;
+  transition:all .2s;font-family:var(--fn);
+  white-space:nowrap;text-decoration:none;color:#fff;
+}
+.sh-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.sh-btn:active{transform:scale(.96)}
+.sh-native{width:100%;border-radius:12px!important;justify-content:center;font-size:14px!important;padding:12px!important;margin-bottom:8px}
+.sh-fb{background:#1877F2}
+.sh-wa{background:#25D366}
+.sh-tg{background:#2AABEE}
+.sh-tw{background:#111}
+.sh-cp{background:linear-gradient(135deg,var(--pri),var(--prid))}
+
+/* ══ COMMENTS ══ */
+.comments-section{margin-top:24px;padding-top:20px;border-top:1px dashed var(--bdr2)}
+.comments-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.comments-title{font-family:var(--dv);font-size:16px;font-weight:700;color:var(--g900)}
+.comments-count{font-size:11px;color:var(--g400);font-family:var(--fn);background:var(--pril);padding:3px 10px;border-radius:20px;border:1px solid var(--bdr2)}
+.cmt-form{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;background:var(--g50);border:1px dashed var(--bdr2);border-radius:var(--r);padding:14px}
+.cmt-name{padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:15px;font-family:var(--dv);color:var(--g900);outline:none;background:var(--g0);transition:.18s;direction:rtl;line-height:1.9}
+.cmt-name:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(27,182,141,.1)}
+.cmt-text{padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:14px;font-family:var(--dv);color:var(--g900);outline:none;background:var(--g0);resize:vertical;direction:rtl;line-height:1.8;transition:.18s}
+.cmt-text:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(27,182,141,.1)}
+.cmt-submit{align-self:flex-end;background:var(--pri);color:#fff;border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--fn);transition:.18s}
+.cmt-submit:hover{background:var(--prid);transform:translateY(-1px)}
+.cmt-item{padding:12px 0;border-bottom:1px dashed var(--bdr2);display:flex;gap:10px;align-items:flex-start}
+.cmt-item:last-child{border-bottom:none}
+.cmt-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--prid));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:var(--fn);flex-shrink:0}
+.cmt-body{flex:1;min-width:0}
+.cmt-meta{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
+.cmt-author{font-size:13px;font-weight:700;color:var(--g800);font-family:var(--dv)}
+.cmt-time{font-size:11px;color:var(--g400);font-family:var(--fn)}
+.cmt-text-body{font-family:var(--dv);font-size:14px;line-height:1.8;color:var(--g700);direction:rtl;word-break:break-word}
+.cmt-empty{text-align:center;padding:28px;font-family:var(--dv);color:var(--g400);font-size:13px}
+body.dark .cmt-form{background:var(--dm-bg3);border-color:var(--dm-bdr)}
+body.dark .cmt-name,body.dark .cmt-text{background:var(--dm-bg2);border-color:var(--dm-bdr);color:var(--dm-txt)}
+/* ══ IMPROVED SHARE ══ */
+.share-bar{margin-top:20px;padding-top:18px;border-top:1px dashed var(--bdr2)}
+.share-title{font-size:11px;font-weight:700;color:var(--g500);text-transform:uppercase;letter-spacing:1.5px;font-family:var(--fn);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.share-title::before{content:'';width:3px;height:13px;background:var(--pri);border-radius:2px;display:block}
+.sh-native{width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--pri),var(--prid));border:none;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fn);display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;transition:.18s;box-shadow:0 4px 14px rgba(27,182,141,.35)}
+.sh-native:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(27,182,141,.45)}
+.share-btns{display:flex;gap:8px;flex-wrap:wrap}
+.sh-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:.18s;font-family:var(--fn);white-space:nowrap;text-decoration:none;color:#fff}
+.sh-btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.sh-btn:active{transform:scale(.96)}
+.sh-fb{background:#1877F2}
+.sh-wa{background:#25D366}
+.sh-tg{background:#2AABEE}
+.sh-tw{background:#111}
+.sh-cp{background:linear-gradient(135deg,var(--pri),var(--prid))}
 /* ══ TIME ══ */
 .time-ago{font-size:11px;color:var(--g400);font-family:var(--fn);white-space:nowrap;display:inline-flex;align-items:center;gap:3px}
 .time-ago.fresh::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 1.2s infinite;flex-shrink:0;margin-left:2px}
@@ -465,9 +510,7 @@ body.dark .share-url-txt{color:var(--pri2)}
 @media(max-width:768px){nav.dk{display:none}.hbg{display:inline-flex}.ngrid{grid-template-columns:repeat(2,1fr)}.vgrid{grid-template-columns:1fr}.sgrid{grid-template-columns:repeat(2,1fr)}.gal-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.ft-logo-band,.ft-bottom{flex-direction:column;align-items:flex-start}.ft-copy{margin-left:0;order:2}}
 @media(max-width:480px){.ngrid{grid-template-columns:1fr}.sgrid{grid-template-columns:1fr 1fr}.hside .sc{width:100%}.htitle{font-size:18px}.hmain{aspect-ratio:4/3;max-height:300px}.gal-grid{grid-template-columns:1fr 1fr}.amod-body{padding:20px 16px}}
-
 </style>
-
 </head>
 <body>
 
@@ -752,11 +795,33 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
         <a onclick="">Contact Us</a>
         <a onclick="">Privacy Policy</a>
       </div>
-      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026@ All rights reserved.</p>
     </div>
   </div>
 </footer>
 </div><!-- /site -->
+
+<!-- VIDEO LIGHTBOX -->
+<div id="vidLb" style="display:none;position:fixed;inset:0;z-index:700;background:#000;flex-direction:column">
+  <!-- Top bar -->
+  <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;background:rgba(27,182,141,.08);border-bottom:1px solid rgba(27,182,141,.12);flex-shrink:0">
+    <button onclick="closeVidLb()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;padding:6px 14px;font-size:13px;cursor:pointer;font-family:var(--fn)">✕ Close</button>
+    <div style="flex:1;min-width:0">
+      <div id="vidLbTitle" style="font-family:var(--dv);font-size:16px;color:#fff;font-weight:700;direction:rtl;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></div>
+      <div id="vidLbMeta" style="font-size:11px;color:rgba(148,244,219,.5);font-family:var(--fn);margin-top:2px"></div>
+    </div>
+    <button onclick="vidGo(-1)" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;padding:6px 12px;font-size:16px;cursor:pointer">‹</button>
+    <button onclick="vidGo(1)"  style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;padding:6px 12px;font-size:16px;cursor:pointer">›</button>
+  </div>
+  <!-- Main video player -->
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;background:#000;position:relative;min-height:0">
+    <video id="vidPlayer" controls playsinline style="max-width:100%;max-height:100%;display:block;width:100%;height:100%;object-fit:contain"></video>
+  </div>
+  <!-- Description -->
+  <div id="vidLbDesc" style="padding:10px 18px;font-family:var(--dv);font-size:14px;color:rgba(255,255,255,.6);direction:rtl;background:rgba(0,0,0,.4);flex-shrink:0;max-height:60px;overflow:hidden"></div>
+  <!-- Thumbnail strip -->
+  <div id="vidStrip" style="display:flex;gap:8px;padding:10px 16px;overflow-x:auto;background:rgba(10,15,13,.9);border-top:1px solid rgba(27,182,141,.12);flex-shrink:0;scrollbar-width:thin;scrollbar-color:rgba(27,182,141,.2) transparent"></div>
+</div>
 
 <!-- ARTICLE MODAL -->
 <div id="amod" onclick="if(event.target===this)closeAMod()">
@@ -772,6 +837,21 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip
       <p class="amod-sum" id="amSum"></p>
       <div class="amod-cnt" id="amCnt"></div>
       <div class="share-bar" id="amShare"></div>
+      <!-- COMMENTS -->
+      <div class="comments-section" id="amComments">
+        <div class="comments-hdr">
+          <div class="comments-title">💬 ކޮމެންޓް</div>
+          <span class="comments-count" id="cmtCount">0 ކޮމެންޓް</span>
+        </div>
+        <!-- Add comment form -->
+        <div class="cmt-form">
+          <input class="cmt-name" id="cmtName" type="text" placeholder="ތިބާގެ ނަން..." maxlength="40">
+          <textarea class="cmt-text" id="cmtText" placeholder="ކޮމެންޓް ލިޔޭ..." rows="2" maxlength="400"></textarea>
+          <button class="cmt-submit" onclick="submitComment()">💬 ފޮނުވާ</button>
+        </div>
+        <!-- Comments list -->
+        <div id="cmtList"><div class="cmt-empty">ކޮމެންޓެއް ނެތް — ފުރަތަމަ ކޮމެންޓް ކުރޭ!</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -964,6 +1044,7 @@ onValue(ref(db,'videos'),s=>{
   if(s.exists())s.forEach(c=>vids.push({id:c.key,...c.val()}));
   vids.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
   renderVids();
+  buildVidStrip();
 });
 // Gallery: use shallow=true REST API to get keys without downloading image data
 // Then fetch each image individually by key
@@ -1130,18 +1211,44 @@ function renderGrid(id,list,max){
 }
 
 function renderVids(){
-  const g=document.getElementById('vidGrid');
-  const active=vids.filter(v=>v.active!==false);
-  if(!active.length){g.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="ei">🎬</div>ވީޑިއޯ ނެތް</div>`;return;}
-  g.innerHTML=active.map(v=>`
-    <div class="vc" onclick="openVid('${v.id}')">
-      <div class="vc-thumb" style="opacity:${(v.opacity||100)/100}">
-        ${v.thumbnail?`<img src="${e(v.thumbnail)}" loading="lazy" alt="">`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#111827,#1A56DB);display:flex;align-items:center;justify-content:center;font-size:36px">🎬</div>`}
-        <div class="vc-play"><span>▶</span></div>
-      </div>
-      <div class="vc-bd"><div class="vc-ttl">${e(v.title)}</div><div class="vc-meta">${fd(v.createdAt)}</div></div>
-    </div>`).join('');
+  var g=document.getElementById('vidGrid');
+  var active=vids.filter(function(v){return v.active!==false;});
+  if(!active.length){
+    g.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🎬</div></div>';
+    return;
+  }
+  g.innerHTML='';
+  active.forEach(function(v){
+    var card=document.createElement('div');
+    card.className='vc';
+    (function(vid){card.onclick=function(){openVid(vid.id);};})(v);
+    var thumb=document.createElement('div');
+    thumb.className='vc-thumb';
+    thumb.style.opacity=(v.opacity||100)/100;
+    // Play overlay
+    var playDiv=document.createElement('div');
+    playDiv.className='vc-play';
+    playDiv.innerHTML='<span>▶</span>';
+    if(v.thumbnail){
+      var img=document.createElement('img');
+      img.alt=v.title||'';
+      img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
+      thumb.appendChild(img);
+      thumb.appendChild(playDiv);
+      img.src=v.thumbnail; // set after append
+    } else {
+      thumb.innerHTML='<div style="width:100%;height:100%;background:linear-gradient(135deg,#071410,#1BB68D20);display:flex;align-items:center;justify-content:center;font-size:36px;color:rgba(27,182,141,.4)">🎬</div>';
+      thumb.appendChild(playDiv);
+    }
+    var bd=document.createElement('div');
+    bd.className='vc-bd';
+    bd.innerHTML='<div class="vc-ttl">'+e(v.title)+'</div><div class="vc-meta">'+fd(v.createdAt)+'</div>';
+    card.appendChild(thumb);
+    card.appendChild(bd);
+    g.appendChild(card);
+  });
 }
+
 
 function renderGal(){
   var g=document.getElementById('galGrid');
@@ -1316,34 +1423,38 @@ window.openAlbum=function(albumName){
   });
   if(!filtered.length)return;
 
-  // Set galLbImgs to this album's images
+  // Store images for navigation
   galLbImgs=filtered.map(function(i){
     return{src:i.imageUrl||i.url||'',cap:i.caption||'',cat:i.category||''};
   });
-
-  // Build lightbox grid
   lbIdx=0;
+
+  // Build thumbnail grid — show actual images
   var grid=document.getElementById('lbGrid');
   grid.innerHTML='';
-  galLbImgs.forEach(function(img,i){
+  filtered.forEach(function(img,i){
     var thumb=document.createElement('div');
     thumb.className='lb-thumb'+(i===0?' active':'');
     thumb.id='lbt'+i;
-    (function(idx){thumb.onclick=function(){openSingle(idx);};})(i);
     var tImg=document.createElement('img');
-    tImg.alt=''; tImg.draggable=false;
+    tImg.alt='';
+    tImg.draggable=false;
+    tImg.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
     tImg.oncontextmenu=function(){return false;};
     thumb.appendChild(tImg);
+    (function(idx){thumb.onclick=function(){openSingle(idx);};})(i);
     grid.appendChild(thumb);
-    tImg.src=img.src;
+    tImg.src=img.src; // set AFTER append — works for base64
   });
 
-  // Show album name as title
+  // Set title
   var titleEl=document.getElementById('lbBarTitle');
   if(titleEl) titleEl.textContent=albumName;
   document.getElementById('lbCount').textContent=filtered.length+' photos';
   document.getElementById('lb').classList.add('op');
   document.body.style.overflow='hidden';
+
+  // Load first image directly into single view
   openSingle(0);
 };
 
@@ -1452,65 +1563,163 @@ window.openArt=function(id){
     bodyEl.innerHTML='';
   }
   // SHARE
-  var _t = encodeURIComponent((a.title||'').trim());
-  var _u = encodeURIComponent('https://www.feeali.com');
-  var _i = encodeURIComponent((a.imageUrl||'').trim());
   var _raw_t = (a.title||'').trim();
   var _raw_u = 'https://www.feeali.com';
+  var _raw_i = (a.imageUrl||'').trim();
 
-  document.getElementById('amShare').innerHTML =
-    '<div class="share-btns">' +
-    '<a class="sh-btn sh-fb" href="https://www.facebook.com/sharer/sharer.php?u='+_u+'&picture='+_i+'&title='+_t+'" target="_blank" rel="noopener">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>' +
-      'Facebook</a>' +
-    '<a class="sh-btn sh-wa" href="https://api.whatsapp.com/send?text='+encodeURIComponent(_raw_t+'\n\n'+_raw_u)+'" target="_blank" rel="noopener">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>' +
-      'WhatsApp</a>' +
-    '<a class="sh-btn sh-tg" href="https://t.me/share/url?url='+_u+'&text='+_t+'" target="_blank" rel="noopener">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>' +
-      'Telegram</a>' +
-    '<a class="sh-btn sh-tw" href="https://twitter.com/intent/tweet?text='+_t+'&url='+_u+'" target="_blank" rel="noopener">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>' +
-      'Twitter</a>' +
-    '<button class="sh-btn sh-cp" id="cpBtn" onclick="cpLink()">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
-      'Copy</button>' +
-    '</div>';
+  // Build share bar — native share + individual platform buttons
+  var shareBar = document.getElementById('amShare');
+  shareBar.innerHTML = '';
 
-  window._cpUrl = _raw_u;
+  // Native Share button (works on mobile — triggers OS share sheet)
+  var nativeBtn = document.createElement('button');
+  nativeBtn.className = 'sh-btn sh-native';
+  nativeBtn.style.cssText = 'grid-column:1/-1;background:linear-gradient(135deg,var(--pri),var(--prid));box-shadow:0 6px 18px rgba(27,182,141,.4);font-size:14px;padding:12px;margin-bottom:4px';
+  nativeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share News';
+  nativeBtn.onclick = function(){
+    if(navigator.share){
+      navigator.share({title:_raw_t, text:_raw_t+' — '+_raw_u, url:_raw_u})
+        .catch(function(){});
+    } else {
+      // Fallback: copy URL
+      navigator.clipboard && navigator.clipboard.writeText(_raw_u);
+      nativeBtn.textContent = '✅ Link Copied!';
+      setTimeout(function(){
+        nativeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share News';
+      }, 2000);
+    }
+  };
+
+  var btnsDiv = document.createElement('div');
+  btnsDiv.className = 'share-btns';
+
+  var E = encodeURIComponent;
+
+  var platforms = [
+    {cls:'sh-fb', href:'https://www.facebook.com/sharer/sharer.php?u='+E(_raw_u)+'&title='+E(_raw_t), label:'Facebook',
+     svg:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'},
+    {cls:'sh-wa', href:'https://api.whatsapp.com/send?text='+E(_raw_t+'\n\n'+_raw_u), label:'WhatsApp',
+     svg:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>'},
+    {cls:'sh-tg', href:'https://t.me/share/url?url='+E(_raw_u)+'&text='+E(_raw_t), label:'Telegram',
+     svg:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>'},
+    {cls:'sh-tw', href:'https://twitter.com/intent/tweet?text='+E(_raw_t)+'&url='+E(_raw_u), label:'Twitter',
+     svg:'<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'},
+    {cls:'sh-cp', label:'Copy Link',
+     svg:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>'}
+  ];
+
+  platforms.forEach(function(p){
+    var btn;
+    if(p.href){
+      btn = document.createElement('a');
+      btn.href = p.href;
+      btn.target = '_blank';
+      btn.rel = 'noopener';
+    } else {
+      btn = document.createElement('button');
+      btn.id = 'cpBtn';
+      btn.onclick = function(){
+        navigator.clipboard && navigator.clipboard.writeText(_raw_u).then(function(){
+          btn.textContent='✅ Copied!';
+          setTimeout(function(){btn.innerHTML=p.svg+' '+p.label;},2000);
+        });
+      };
+    }
+    btn.className = 'sh-btn '+p.cls;
+    btn.innerHTML = p.svg+' '+p.label;
+    btnsDiv.appendChild(btn);
+  });
+
+  shareBar.appendChild(nativeBtn);
+  shareBar.appendChild(btnsDiv);
 
   document.getElementById('amod').classList.add('op');
   document.body.style.overflow='hidden';
-};
-window.cpLink = function() {
-  var btn = document.getElementById('cpBtn');
-  var url = window._cpUrl || 'https://www.feeali.com';
-  function ok() {
-    if (!btn) return;
-    btn.textContent = '\u2705 Copied!';
-    btn.classList.add('copied');
-    setTimeout(function() {
-      btn.innerHTML = 'Copy';
-      btn.classList.remove('copied');
-    }, 2000);
-  }
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(url).then(ok).catch(function() {
-      var ta=document.createElement('textarea');ta.value=url;
-      document.body.appendChild(ta);ta.select();
-      document.execCommand('copy');document.body.removeChild(ta);ok();
-    });
-  } else {
-    var ta=document.createElement('textarea');ta.value=url;
-    document.body.appendChild(ta);ta.select();
-    document.execCommand('copy');document.body.removeChild(ta);ok();
-  }
+  // Load comments for this article
+  window._currentArtTs = a.createdAt||0;
+  loadComments(a.id);
 };
 
 window.closeAMod=function(){
   document.getElementById('amod').classList.remove('op');document.body.style.overflow='';
   const vid=document.getElementById('amVid');vid.pause();vid.src='';
 };
+// ── VIDEO LIGHTBOX ──
+var vidList=[]; // all active videos
+var vidIdx=0;
+
+window.openVid=function(id){
+  var active=vids.filter(function(v){return v.active!==false;});
+  vidList=active;
+  var idx=active.findIndex(function(v){return v.id===id;});
+  vidIdx=idx>=0?idx:0;
+  showVid(vidIdx);
+  document.getElementById('vidLb').classList.add('op');
+  document.body.style.overflow='hidden';
+};
+
+function showVid(idx){
+  if(!vidList.length)return;
+  vidIdx=idx;
+  var v=vidList[idx];
+  var player=document.getElementById('vidPlayer');
+  var titleEl=document.getElementById('vidLbTitle');
+  var metaEl=document.getElementById('vidLbMeta');
+  var descEl=document.getElementById('vidLbDesc');
+
+  // Stop current video
+  player.pause();
+  player.src='';
+
+  // Set new source
+  if(v.url) player.src=v.url;
+  if(titleEl) titleEl.textContent=v.title||'';
+  if(metaEl) metaEl.textContent=(idx+1)+' / '+vidList.length+' · '+fd(v.createdAt);
+  if(descEl) descEl.textContent=v.description||'';
+
+  // Update thumbnail strip
+  document.querySelectorAll('.vid-thumb').forEach(function(t,i){
+    t.classList.toggle('active', i===idx);
+  });
+
+  // Auto-play
+  player.load();
+  player.play().catch(function(){});
+}
+
+window.vidGo=function(dir){
+  var next=vidIdx+dir;
+  if(next<0) next=vidList.length-1;
+  if(next>=vidList.length) next=0;
+  showVid(next);
+};
+
+window.closeVidLb=function(){
+  var player=document.getElementById('vidPlayer');
+  player.pause(); player.src='';
+  document.getElementById('vidLb').classList.remove('op');
+  document.body.style.overflow='';
+};
+
+// Build video thumbnail strip
+function buildVidStrip(){
+  var strip=document.getElementById('vidStrip');
+  if(!strip)return;
+  strip.innerHTML='';
+  var active=vids.filter(function(v){return v.active!==false;});
+  active.forEach(function(v,i){
+    var t=document.createElement('div');
+    t.className='vid-thumb'+(i===0?' active':'');
+    t.innerHTML='<span class="vid-thumb-num">'+(i+1)+'</span><div class="vid-thumb-ttl">'+e(v.title)+'</div>';
+    if(v.thumbnail){
+      var img=document.createElement('img');
+      t.insertBefore(img,t.firstChild);
+      img.src=v.thumbnail;
+    }
+    (function(idx){t.onclick=function(){showVid(idx);};})(i);
+    strip.appendChild(t);
+  });
+}
 
 // ── FULL GALLERY VIEWER ──
 window.openLb=function(startIdx){
@@ -1762,7 +1971,122 @@ function fdFull(ts){
 function fd(ts){return timeAgo(ts);}
 function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-// ── DEEPLINK: open article from URL slug or ?art=ID ──
+// ── COMMENTS SYSTEM ──
+var _currentArtId = null;
+var _cmtUnsub = null;
+
+function loadComments(artId){
+  _currentArtId = artId;
+  var listEl = document.getElementById('cmtList');
+  var countEl = document.getElementById('cmtCount');
+  if(!listEl) return;
+
+  // Unsubscribe previous listener
+  if(_cmtUnsub){ _cmtUnsub(); _cmtUnsub=null; }
+
+  listEl.innerHTML = '<div class="cmt-empty" style="color:var(--g400)">ލޯޑްވަނީ...</div>';
+
+  // Listen in real-time
+  _cmtUnsub = onValue(ref(db,'comments/'+artId), function(s){
+    var cmts = [];
+    if(s.exists()) s.forEach(function(c){ cmts.push({id:c.key,...c.val()}); });
+    cmts.sort(function(a,b){return (a.createdAt||0)-(b.createdAt||0);});
+
+    if(countEl) countEl.textContent = cmts.length + ' ކޮމެންޓް';
+
+    if(!cmts.length){
+      listEl.innerHTML = '<div class="cmt-empty">ކޮމެންޓެއް ނެތް — ފުރަތަމަ ކޮމެންޓް ކުރޭ!</div>';
+      return;
+    }
+
+    listEl.innerHTML = '';
+    cmts.forEach(function(cmt){
+      var item = document.createElement('div');
+      item.className = 'cmt-item';
+      var initial = (cmt.name||'?')[0].toUpperCase();
+      var ago = timeAgo(cmt.createdAt||0);
+      item.innerHTML =
+        '<div class="cmt-avatar">'+initial+'</div>'
+        +'<div class="cmt-body">'
+          +'<div class="cmt-meta">'
+            +'<span class="cmt-author">'+e(cmt.name||'Anonymous')+'</span>'
+            +'<span class="cmt-time">'+ago+'</span>'
+          +'</div>'
+          +'<div class="cmt-text-body">'+e(cmt.text||'')+'</div>'
+        +'</div>';
+      listEl.appendChild(item);
+    });
+    // Scroll to bottom for latest
+    listEl.scrollTop = listEl.scrollHeight;
+  });
+}
+
+window.submitComment = function(){
+  var nameEl = document.getElementById('cmtName');
+  var textEl = document.getElementById('cmtText');
+  var btn = document.querySelector('.cmt-submit');
+  var name = (nameEl.value||'').trim();
+  var text = (textEl.value||'').trim();
+
+  if(!text){ textEl.focus(); textEl.style.borderColor='var(--red)'; setTimeout(function(){textEl.style.borderColor='';},1500); return; }
+  if(!name){ nameEl.focus(); nameEl.style.borderColor='var(--red)'; setTimeout(function(){nameEl.style.borderColor='';},1500); return; }
+  if(!_currentArtId) return;
+
+  btn.disabled = true;
+  btn.textContent = '⏳...';
+
+  var db2 = db; // use existing db
+  var {push:fbPush, ref:fbRef} = {push:window._fbPush, ref:window._fbRef};
+
+  // Use get imported from firebase
+  var DB_URL='https://faafupolicerunning-default-rtdb.firebaseio.com';
+  fetch(DB_URL+'/comments/'+_currentArtId+'.json', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({name:name, text:text, createdAt:Date.now()})
+  }).then(function(){
+    textEl.value = '';
+    btn.disabled = false;
+    btn.textContent = '💬 ފޮނުވާ';
+    try{ localStorage.setItem('cmt_name', name); }catch(e){}
+  }).catch(function(){
+    btn.disabled = false;
+    btn.textContent = '💬 ފޮނުވާ';
+  });
+};
+
+// Pre-fill commenter name from localStorage
+(function(){
+  try{
+    var saved = localStorage.getItem('cmt_name');
+    if(saved){
+      var el = document.getElementById('cmtName');
+      if(el) el.value = saved;
+    }
+  }catch(e){}
+})();
+
+// ── REAL-TIME TIMESTAMP UPDATER ──
+// Updates all time-ago strings in the article modal every 10 seconds
+setInterval(function(){
+  // Update article meta time if modal is open
+  var amod = document.getElementById('amod');
+  if(amod && amod.classList.contains('op')){
+    var metaEl = document.getElementById('amMeta');
+    if(metaEl && window._currentArtTs){
+      var ago = timeAgo(window._currentArtTs);
+      var agoEl = metaEl.querySelector('.time-ago-live');
+      if(agoEl) agoEl.textContent = ago;
+    }
+    // Update comment timestamps
+    var cmtTimes = document.querySelectorAll('.cmt-time[data-ts]');
+    cmtTimes.forEach(function(el){
+      el.textContent = timeAgo(parseInt(el.dataset.ts)||0);
+    });
+  }
+}, 10000);
+
+
 (function(){
   const params=new URLSearchParams(window.location.search);
   const artId=params.get('art');
