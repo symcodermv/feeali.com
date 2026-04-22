@@ -489,7 +489,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')skipIntro();
     </div>
     <nav class="dk" id="dkNav">
       <a class="on" onclick="goHome()">ހޯމް</a>
-      <a onclick="setF('news',this)">ހަބަރު</a>
+      <a onclick="setF('news',this)">ޚަބަރު</a>
       <a onclick="setF('report',this)">ރިޕޯޓް</a>
       <a onclick="setF('world',this)">ބޭރު ދުނިޔެ</a>
       <a onclick="setF('sports',this)">ކުޅިވަރު</a>
@@ -526,7 +526,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')skipIntro();
   <div class="topics-in" id="topicsIn">
     <span class="tlbl">ދާއިރާ</span>
     <span class="ttag on" onclick="setTF(null,this)">ހުރިހާ</span>
-    <span class="ttag" onclick="setTF('news',this)">ހަބަރު</span>
+    <span class="ttag" onclick="setTF('news',this)">ޚަބަރު</span>
     <span class="ttag" onclick="setTF('report',this)">ރިޕޯޓް</span>
     <span class="ttag" onclick="setTF('world',this)">ބޭރު ދުނިޔެ</span>
     <span class="ttag" onclick="setTF('sports',this)">ކުޅިވަރު</span>
@@ -619,7 +619,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')skipIntro();
     </div>
     <div class="ft-bottom">
       <div class="ft-links"><a>Code of Conduct</a><a>Editorial Policy</a><a>Contact Us</a><a>Privacy Policy</a></div>
-      <p class="ft-copy">&copy; 2026 ފީއަލި. All rights reserved.</p>
+      <p class="ft-copy">&copy; 2026 ފީއަލީ.ކޮމް@ All rights reserved.</p>
     </div>
   </div>
 </footer>
@@ -1125,9 +1125,10 @@ function buildShareHTML(id,a){
   document.title=(a.title||'')+' \u2014 \u078a\u07a9\u0787\u07a6\u078d\u07a8';
   if(window.history&&window.history.pushState)window.history.pushState({art:id},a.title||'','/'+id);
   var isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  var waUrl='https://wa.me/?text='+st+'%0A'+su;
+  // Use app deep links on mobile for instant open, web URLs on desktop
+  var waUrl=isMobile?'whatsapp://send?text='+st+'%20'+su:'https://wa.me/?text='+st+'%0A'+su;
   var fbUrl='https://www.facebook.com/sharer/sharer.php?u='+su;
-  var tgUrl='https://t.me/share/url?url='+su+'&text='+st;
+  var tgUrl=isMobile?'tg://msg_url?url='+su+'&text='+st:'https://t.me/share/url?url='+su+'&text='+st;
   var html='<div class="share-section"><div class="share-label">\ud83d\udce4 \u0780\u07a8\u0787\u07b0\u0790\u07a7 \u0786\u07aa\u0783\u07ad</div>';
   // On mobile: big native share button first
   if(isMobile&&typeof navigator.share!=='undefined'){
@@ -1310,25 +1311,26 @@ window.nativeShare=function(id){
       title:(a&&a.title)||'\u078a\u07a9\u0787\u07a6\u078d\u07a8',
       text:(a&&a.summary)||(a&&a.title)||'',
       url:artUrl
+    }).then(function(){
+      // shared successfully
     }).catch(function(err){
-      if(err.name!=='AbortError')copyLink(id);
+      if(err&&err.name!=='AbortError')copyLink(id);
     });
   }else{
+    // Fallback: try shareOpen for the platform buttons, else copy
     copyLink(id);
   }
 };
 window.shareOpen=function(url){
-  // On mobile: use location.href for deep links (wa://, fb://, tg://)
-  // On desktop: window.open in a small popup
-  try{
-    var w=window.open(url,'_blank','noopener,noreferrer,width=600,height=500');
-    if(!w||w.closed||typeof w.closed==='undefined'){
-      // Popup blocked — fall back to same-tab navigation
-      location.href=url;
-    }
-  }catch(e){
-    location.href=url;
-  }
+  // Create a real <a> element and click it — this is a trusted user gesture,
+  // never blocked by mobile browsers unlike window.open()
+  var a=document.createElement('a');
+  a.href=url;
+  a.rel='noopener noreferrer';
+  a.style.display='none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){document.body.removeChild(a);},300);
 };
 window.copyLink=function(id){var url='https://www.feeali.com/'+id;var btn=document.getElementById('cpBtn');var urlEl=document.querySelector('.share-link-url');function done(){if(btn){btn.textContent='✅ Copied!';btn.style.background='#059669';btn.style.color='#fff';}if(urlEl)urlEl.style.color='var(--pri)';setTimeout(function(){if(btn){btn.textContent='Copy';btn.style.background='';btn.style.color='';}if(urlEl)urlEl.style.color='';},2500);}if(navigator.clipboard){navigator.clipboard.writeText(url).then(done).catch(()=>{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done();});}else{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done();}};
 
