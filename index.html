@@ -732,6 +732,16 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')skipIntro();
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONTENT PROTECTION OVERLAY                                 -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="protectOverlay" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(10,20,16,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:24px;text-align:center">
+  <div style="width:72px;height:72px;border-radius:50%;background:rgba(27,182,141,0.12);border:2px solid rgba(27,182,141,0.3);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px">🔒</div>
+  <div style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;color:#1BB68D;letter-spacing:-0.3px">Content Protected</div>
+  <div style="font-family:'Poppins',sans-serif;font-size:13px;color:rgba(255,255,255,0.5);max-width:280px;line-height:1.8">This content is protected by copyright.<br>Viewing source or copying is not permitted.</div>
+  <button onclick="document.getElementById('protectOverlay').style.display='none'" style="margin-top:8px;background:rgba(27,182,141,0.15);border:1.5px solid rgba(27,182,141,0.4);border-radius:30px;padding:11px 32px;color:#94F4DB;font-size:13px;font-weight:600;cursor:pointer;font-family:'Poppins',sans-serif;transition:.2s;letter-spacing:.3px">OK</button>
+</div>
+
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import{getDatabase,ref,onValue,get,push}from'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
@@ -887,20 +897,13 @@ function renderSubcatArticles(catKey,cat,sk,container){var catArts=arts.filter(a
 
 function buildTicker(){const items=arts.slice(0,14);document.getElementById('tkTrack').innerHTML=[...items,...items].map(a=>`<span class="tk-item" onclick="openArt('${a.id}')">${e(a.title)}</span>`).join('');}
 
-// ══════════════════════════════════════
-// BUILD ARTICLE BODY — paragraphs + inline images
-// ══════════════════════════════════════
 function buildArticleBody(a){
   var bodyEl=document.getElementById('amCnt');
   bodyEl.innerHTML='';
-
-  // If rich paragraphs exist, use them
   if(a.paragraphs&&a.paragraphs.length){
     a.paragraphs.forEach(function(para){
       if(!para.text&&!para.imageUrl)return;
       var block=document.createElement('div');block.className='art-para-block';
-
-      // Image above text
       if(para.imageUrl&&para.imagePosition==='above'){
         var imgWrap=document.createElement('div');imgWrap.className='art-para-img';
         var img=document.createElement('img');img.alt=para.imageCaption||'';img.style.cssText='width:100%;height:auto;display:block;max-height:420px;object-fit:cover;opacity:0;transition:opacity .4s';
@@ -909,14 +912,7 @@ function buildArticleBody(a){
         block.appendChild(imgWrap);
         setLazyImg(img,para.imageUrl);img.onload=function(){img.style.opacity='1';};
       }
-
-      // Paragraph text
-      if(para.text){
-        var p=document.createElement('p');p.className='art-para-text';p.textContent=para.text;
-        block.appendChild(p);
-      }
-
-      // Image below text
+      if(para.text){var p=document.createElement('p');p.className='art-para-text';p.textContent=para.text;block.appendChild(p);}
       if(para.imageUrl&&para.imagePosition!=='above'){
         var imgWrap2=document.createElement('div');imgWrap2.className='art-para-img';imgWrap2.style.marginTop='12px';
         var img2=document.createElement('img');img2.alt=para.imageCaption||'';img2.style.cssText='width:100%;height:auto;display:block;max-height:420px;object-fit:cover;opacity:0;transition:opacity .4s';
@@ -925,50 +921,32 @@ function buildArticleBody(a){
         block.appendChild(imgWrap2);
         setLazyImg(img2,para.imageUrl);img2.onload=function(){img2.style.opacity='1';};
       }
-
       bodyEl.appendChild(block);
     });
   } else if(a.body){
-    // Fallback: plain body text
     var paras=(a.body||'').split('\n\n').filter(p=>p.trim());
-    paras.forEach(function(pt){
-      var p=document.createElement('p');p.className='art-para-text';p.style.marginBottom='16px';p.innerHTML=e(pt.trim()).replace(/\n/g,'<br>');
-      bodyEl.appendChild(p);
-    });
+    paras.forEach(function(pt){var p=document.createElement('p');p.className='art-para-text';p.style.marginBottom='16px';p.innerHTML=e(pt.trim()).replace(/\n/g,'<br>');bodyEl.appendChild(p);});
   }
 }
 
-// ══════════════════════════════════════
-// BUILD ARTICLE GALLERY
-// ══════════════════════════════════════
 function buildArticleGallery(a){
   var galEl=document.getElementById('amGallery');galEl.innerHTML='';
   var images=a.images&&Array.isArray(a.images)?a.images:[];
-
-  // Also collect paragraph inline images for the gallery
   var paraImgs=[];if(a.paragraphs&&a.paragraphs.length){a.paragraphs.forEach(function(p){if(p.imageUrl)paraImgs.push({url:p.imageUrl,caption:p.imageCaption||''});});}
-
   var allImgs=[...images,...paraImgs].filter(i=>i.url);
   if(!allImgs.length)return;
-
   var section=document.createElement('div');section.className='art-gallery-section';
   var title=document.createElement('div');title.className='art-gallery-title';title.textContent=' ފޮޓޯ  ('+allImgs.length+')';
   section.appendChild(title);
-
   var grid=document.createElement('div');grid.className='art-gallery-grid';
   var MAX_SHOW=6;var showAll=false;
-
   function renderItems(){
     grid.innerHTML='';var toShow=showAll?allImgs:allImgs.slice(0,MAX_SHOW);
     toShow.forEach(function(img,i){
       var item=document.createElement('div');item.className='art-gallery-item';
       var imgEl=document.createElement('img');imgEl.alt=img.caption||'';item.appendChild(imgEl);
       var ov=document.createElement('div');ov.className='art-gallery-item-ov';ov.innerHTML='<span style="color:#fff;font-size:22px">🔍</span>';item.appendChild(ov);
-      // Click opens lightbox with all article gallery images
-      (function(idx){item.onclick=function(){
-        galLbImgs=allImgs.map(x=>({src:x.url,cap:x.caption||'',cat:''}));
-        openLb(idx);
-      };})(i);
+      (function(idx){item.onclick=function(){galLbImgs=allImgs.map(x=>({src:x.url,cap:x.caption||'',cat:''}));openLb(idx);};})(i);
       grid.appendChild(item);
       setLazyImg(imgEl,img.url);imgEl.onload=function(){imgEl.classList.add('loaded');};
     });
@@ -1008,12 +986,9 @@ window.openArt=function(id){
   document.getElementById('amMeta').innerHTML='<span class="time-ago'+(isFresh?' fresh':'')+'" title="'+e(timeStr)+'">🕐 '+e(timeStr)+'</span> <span style="color:var(--g300)">·</span> <span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px">'+e(agoStr)+'</span>'+(a.author?' <span style="color:var(--g300)">·</span> <span style="font-family:var(--dv);font-size:13px">✍️ '+e(a.author)+'</span>':'');
   window._openArtTs=a.createdAt||0;
   document.getElementById('amSum').textContent=a.summary||'';
-  // Rich body with paragraph images
   buildArticleBody(a);
-  // Source
   var srcEl=document.getElementById('amSource');
   if(srcEl){if(a.sourceUrl&&a.sourceUrl.trim()){srcEl.style.display='flex';var lnk=document.getElementById('amSourceLink');if(lnk){lnk.href=a.sourceUrl;lnk.textContent=a.sourceUrl.replace(/^https?:\/\//,'');}}else{srcEl.style.display='none';}}
-  // Article image gallery
   buildArticleGallery(a);
   document.getElementById('amShare').innerHTML=buildShareHTML(id,a);
   window._openArtId=id;
@@ -1075,6 +1050,98 @@ window.shareOpen=function(url){var a=document.createElement('a');a.href=url;a.re
 window.copyLink=function(id){var url='https://www.feeali.com/'+id;var btn=document.getElementById('cpBtn');var urlEl=document.querySelector('.share-link-url');function done(){if(btn){btn.textContent='✅ Copied!';btn.style.background='#059669';btn.style.color='#fff';}if(urlEl)urlEl.style.color='var(--pri)';setTimeout(function(){if(btn){btn.textContent='Copy';btn.style.background='';btn.style.color='';}if(urlEl)urlEl.style.color='';},2500);}if(navigator.clipboard){navigator.clipboard.writeText(url).then(done).catch(()=>{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done();});}else{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done();}};
 
 (function(){var artId=null;var path=window.location.pathname.replace(/^\//,'');if(path&&path.length>5&&path!=='index.html'){artId=path;}else{artId=new URLSearchParams(window.location.search).get('art');}if(!artId)return;if(window.history&&window.history.replaceState)window.history.replaceState({art:artId},'','/'+artId);var tries=0;var wait=setInterval(function(){tries++;var found=arts.find(a=>a.id===artId);if(found){clearInterval(wait);openArt(found.id);}if(tries>30)clearInterval(wait);},400);window.addEventListener('popstate',function(ev){if(!ev.state||!ev.state.art)closeAMod();});})();
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- CONTENT PROTECTION SCRIPT — blocks right-click, Ctrl+U,   -->
+<!-- Ctrl+S, F12, DevTools shortcuts, copy, print, drag        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  // Show/hide the protection overlay
+  function showProtect(){
+    var ov=document.getElementById("protectOverlay");
+    if(!ov)return;
+    ov.style.display="flex";
+    clearTimeout(ov._t);
+    ov._t=setTimeout(function(){ov.style.display="none";},3500);
+  }
+
+  // ── 1. Block right-click ──────────────────────────────────
+  document.addEventListener("contextmenu",function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    showProtect();
+    return false;
+  },true);
+
+  // ── 2. Block keyboard shortcuts ───────────────────────────
+  document.addEventListener("keydown",function(e){
+    var c=e.ctrlKey||e.metaKey;
+    var k=(e.key||"").toLowerCase();
+    var kc=e.keyCode||e.which||0;
+    var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();
+    var inInput=(tag==="input"||tag==="textarea");
+
+    // F12 — DevTools
+    if(kc===123){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+U — View Source
+    if(c&&k==="u"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+S — Save page
+    if(c&&k==="s"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+P — Print
+    if(c&&k==="p"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+Shift+I — Inspector
+    if(c&&e.shiftKey&&k==="i"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+Shift+J — Console
+    if(c&&e.shiftKey&&k==="j"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+Shift+C — Inspect element
+    if(c&&e.shiftKey&&k==="c"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+A — Select all (outside inputs)
+    if(c&&k==="a"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+C — Copy (outside inputs)
+    if(c&&k==="c"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
+  },true);
+
+  // ── 3. Block copy event (outside form fields) ─────────────
+  document.addEventListener("copy",function(e){
+    var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();
+    if(tag==="input"||tag==="textarea")return;
+    e.preventDefault();
+    e.stopPropagation();
+    showProtect();
+    return false;
+  },true);
+
+  // ── 4. Block drag (images etc.) ───────────────────────────
+  document.addEventListener("dragstart",function(e){
+    var tag=(e.target&&e.target.tagName||"").toLowerCase();
+    if(tag!=="input"&&tag!=="textarea"){
+      e.preventDefault();
+      return false;
+    }
+  },true);
+
+  // ── 5. CSS: disable text selection everywhere except inputs ─
+  var ps=document.createElement("style");
+  ps.textContent=[
+    "*:not(input):not(textarea):not([contenteditable]){",
+    "-webkit-user-select:none!important;",
+    "-moz-user-select:none!important;",
+    "-ms-user-select:none!important;",
+    "user-select:none!important}",
+    "img{pointer-events:none!important;-webkit-user-drag:none!important;}"
+  ].join("");
+  document.head.appendChild(ps);
+
+  // ── 6. Block print ────────────────────────────────────────
+  window.addEventListener("beforeprint",function(e){
+    // Blank out the page content during print
+    var orig=document.body.innerHTML;
+    document.body.innerHTML="<div style='display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:22px;font-weight:700;color:#1BB68D'>&#128274; Content Protected — Printing Not Allowed</div>";
+    setTimeout(function(){document.body.innerHTML=orig;},500);
+  });
+})();
 </script>
 </body>
 </html>
