@@ -466,7 +466,7 @@ footer{background:#C1F6E8;padding:0;margin-top:0;border-top:1px dashed rgba(27,1
 <body>
 
 <div id="splash">
-  <video id="splashVid" autoplay muted playsinline loop></video>
+  <video id="splashVid" autoplay muted playsinline loop preload="auto" webkit-playsinline x5-playsinline x5-video-player-type="h5" x5-video-player-fullscreen="false"></video>
   <div class="sp-layer">
     <img class="sp-logo-img" id="spLogoImg" src="" alt="">
     <div class="sp-logo-txt" id="spLogoTxt">ފީއަލި</div>
@@ -477,9 +477,73 @@ footer{background:#C1F6E8;padding:0;margin-top:0;border-top:1px dashed rgba(27,1
 </div>
 <script>
 window._splashDone=false;window._splashTimer=null;
-function skipIntro(){if(window._splashDone)return;window._splashDone=true;if(window._splashTimer)clearTimeout(window._splashTimer);var sp=document.getElementById('splash');var vid=document.getElementById('splashVid');if(sp){sp.style.transition='opacity .45s ease';sp.style.opacity='0';setTimeout(function(){sp.style.display='none';sp.style.opacity='1';sp.style.transition='';},470);}if(vid){try{vid.pause();}catch(e){}vid.src='';}document.body.style.overflow='';}
-function startVideoSplash(url,dur){if(!url||window._splashDone)return;var sp=document.getElementById('splash');var vid=document.getElementById('splashVid');var fill=document.getElementById('spFill');sp.classList.add('on');document.body.style.overflow='hidden';fill.style.transition='none';fill.style.width='0%';vid.src=url;vid.muted=true;vid.loop=true;function onPlaying(){if(window._splashDone)return;vid.classList.add('show');requestAnimationFrame(function(){requestAnimationFrame(function(){fill.style.transition='width '+(dur/1000)+'s linear';fill.style.width='100%';});});window._splashTimer=setTimeout(function(){if(!window._splashDone)skipIntro();},dur);}var p=vid.play();if(p!==undefined){p.then(onPlaying).catch(function(){onPlaying();});}else{onPlaying();}setTimeout(function(){if(!window._splashDone&&!vid.classList.contains('show'))onPlaying();},1200);}
-(function(){try{var cached=localStorage.getItem('feeali_intro');if(cached){var d=JSON.parse(cached);if(d&&d.url){startVideoSplash(d.url,(d.dur||5)*1000);}}}catch(e){}})();
+function skipIntro(){
+  if(window._splashDone)return;
+  window._splashDone=true;
+  if(window._splashTimer)clearTimeout(window._splashTimer);
+  var sp=document.getElementById('splash');
+  var vid=document.getElementById('splashVid');
+  if(sp){sp.style.transition='opacity .45s ease';sp.style.opacity='0';setTimeout(function(){sp.style.display='none';sp.style.opacity='1';sp.style.transition='';},470);}
+  if(vid){try{vid.pause();}catch(e){}vid.src='';}
+  document.body.style.overflow='';
+}
+function startVideoSplash(url,dur){
+  if(!url||window._splashDone)return;
+  var sp=document.getElementById('splash');
+  var vid=document.getElementById('splashVid');
+  var fill=document.getElementById('spFill');
+  sp.classList.add('on');
+  document.body.style.overflow='hidden';
+  fill.style.transition='none';
+  fill.style.width='0%';
+  vid.muted=true;
+  vid.loop=true;
+  vid.volume=0;
+  vid.setAttribute('muted','');
+  vid.setAttribute('playsinline','');
+  vid.setAttribute('webkit-playsinline','');
+  vid.setAttribute('preload','auto');
+  vid.src=url;
+  vid.load();
+  var _played=false;
+  function onPlaying(){
+    if(window._splashDone||_played)return;
+    _played=true;
+    vid.classList.add('show');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        fill.style.transition='width '+(dur/1000)+'s linear';
+        fill.style.width='100%';
+      });
+    });
+    window._splashTimer=setTimeout(function(){if(!window._splashDone)skipIntro();},dur);
+  }
+  function tryPlay(){
+    vid.muted=true;
+    vid.volume=0;
+    var p=vid.play();
+    if(p!==undefined){
+      p.then(onPlaying).catch(function(){if(!_played)onPlaying();});
+    } else {
+      onPlaying();
+    }
+  }
+  vid.addEventListener('canplay',function(){tryPlay();},{once:true});
+  vid.addEventListener('loadeddata',function(){tryPlay();},{once:true});
+  vid.addEventListener('playing',function(){onPlaying();},{once:true});
+  tryPlay();
+  setTimeout(function(){if(!_played)onPlaying();},800);
+  document.addEventListener('touchstart',function _t(){
+    document.removeEventListener('touchstart',_t);
+    if(!_played){vid.muted=true;vid.play().catch(function(){});}
+  },{once:true,passive:true});
+}
+(function(){
+  try{
+    var cached=localStorage.getItem('feeali_intro');
+    if(cached){var d=JSON.parse(cached);if(d&&d.url){startVideoSplash(d.url,(d.dur||5)*1000);}}
+  }catch(e){}
+})();
 document.getElementById('spSkip').addEventListener('click',skipIntro);
 document.addEventListener('keydown',function(e){if(e.key==='Escape')skipIntro();});
 </script>
