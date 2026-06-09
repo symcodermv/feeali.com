@@ -37,6 +37,7 @@
   --fs-card:16px;
   --fs-hero:20px;
   --fs-nav:15px;
+  --fs-date:11px;
   --dm-bg:#0A0F0D;--dm-bg2:#0F1A16;--dm-bg3:#142119;--dm-bg4:#1A2E23;
   --dm-bdr:#1E3D2E;--dm-txt:#E2F0EC;--dm-sub:#7AAD9A;
 }
@@ -240,7 +241,7 @@ body.dark .ibtn,body.dark .dm-btn{border-color:var(--dm-bdr);color:var(--dm-sub)
 .nc-bd{padding:8px 4px 10px;flex:1;display:flex;flex-direction:column;gap:4px}
 .nc-cat{display:none}
 .nc-ttl{font-family:var(--dv);font-size:var(--fs-card);line-height:1.75;color:var(--g900);flex:1;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;text-align:right;direction:rtl}
-.nc-date{font-size:11px;color:var(--g400);margin-top:0;margin-bottom:4px;font-family:var(--fn);order:-1;display:flex;align-items:center;gap:3px}
+.nc-date{font-size:var(--fs-date);color:var(--g400);margin-top:0;margin-bottom:4px;font-family:var(--fn);order:-1;display:flex;align-items:center;gap:3px}
 .dband{background:linear-gradient(135deg,#0D2318 0%,#0F2E1C 50%,#0D2318 100%);padding:40px 0;position:relative;overflow:hidden}
 .dband::before{content:'';position:absolute;top:-40%;right:-5%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(27,182,141,.1) 0%,transparent 70%);pointer-events:none}
 .dband .st{color:#fff}.dband .st::before{background:var(--pri2)}
@@ -1186,6 +1187,7 @@ onValue(ref(db,'settings/fontSizes'),function(s){
   if(d.card)r.style.setProperty('--fs-card',d.card+'px');
   if(d.hero)r.style.setProperty('--fs-hero',d.hero+'px');
   if(d.nav)r.style.setProperty('--fs-nav',d.nav+'px');
+  if(d.date)r.style.setProperty('--fs-date',d.date+'px');
 });
 
 // FONTS — load from Firebase and apply (MvMAG shows instantly as fallback)
@@ -1522,5 +1524,95 @@ window.nativeShare=function(id){var a=arts.find(z=>z.id===id);var artUrl='https:
 window.copyLink=function(id){var url='https://www.feeali.com/'+id;var btn=document.getElementById('cpBtn');var urlEl=document.querySelector('.share-link-url');function done(){if(btn){btn.textContent='✅ Copied!';btn.style.background='#059669';btn.style.color='#fff';}if(urlEl)urlEl.style.color='var(--pri)';setTimeout(function(){if(btn){btn.textContent='Copy';btn.style.background='';btn.style.color='';}if(urlEl)urlEl.style.color='';},2500);}if(navigator.clipboard){navigator.clipboard.writeText(url).then(done).catch(()=>{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done();});}else{var t=document.createElement('textarea');t.value=url;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done();}};
 (function(){var artId=null;var path=window.location.pathname.replace(/^\//,'');if(path&&path.length>5&&path!=='index.html'){artId=path;}else{artId=new URLSearchParams(window.location.search).get('art');}if(!artId)return;if(window.history&&window.history.replaceState)window.history.replaceState({art:artId},'','/'+artId);var tries=0;var wait=setInterval(function(){tries++;var found=arts.find(a=>a.id===artId);if(found){clearInterval(wait);openArt(found.id);}if(tries>30)clearInterval(wait);},400);window.addEventListener('popstate',function(ev){if(!ev.state||!ev.state.art)closeArtPage();});})();
 </script>
+
+<script>
+(function(){
+  // Show/hide the protection overlay
+  function showProtect(){
+    var ov=document.getElementById("protectOverlay");
+    if(!ov)return;
+    ov.style.display="flex";
+    clearTimeout(ov._t);
+    ov._t=setTimeout(function(){ov.style.display="none";},3500);
+  }
+
+  // ── 1. Block right-click ──────────────────────────────────
+  document.addEventListener("contextmenu",function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    showProtect();
+    return false;
+  },true);
+
+  // ── 2. Block keyboard shortcuts ───────────────────────────
+  document.addEventListener("keydown",function(e){
+    var c=e.ctrlKey||e.metaKey;
+    var k=(e.key||"").toLowerCase();
+    var kc=e.keyCode||e.which||0;
+    var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();
+    var inInput=(tag==="input"||tag==="textarea");
+
+    // F12 — DevTools
+    if(kc===123){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+U — View Source
+    if(c&&k==="u"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+S — Save page
+    if(c&&k==="s"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+P — Print
+    if(c&&k==="p"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+Shift+I — Inspector
+    if(c&&e.shiftKey&&k==="i"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+Shift+J — Console
+    if(c&&e.shiftKey&&k==="j"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+Shift+C — Inspect element
+    if(c&&e.shiftKey&&k==="c"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+A — Select all (outside inputs)
+    if(c&&k==="a"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    // Ctrl+C — Copy (outside inputs)
+    if(c&&k==="c"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
+  },true);
+
+  // ── 3. Block copy event (outside form fields) ─────────────
+  document.addEventListener("copy",function(e){
+    var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();
+    if(tag==="input"||tag==="textarea")return;
+    e.preventDefault();
+    e.stopPropagation();
+    showProtect();
+    return false;
+  },true);
+
+  // ── 4. Block drag (images etc.) ───────────────────────────
+  document.addEventListener("dragstart",function(e){
+    var tag=(e.target&&e.target.tagName||"").toLowerCase();
+    if(tag!=="input"&&tag!=="textarea"){
+      e.preventDefault();
+      return false;
+    }
+  },true);
+
+  // ── 5. CSS: disable text selection everywhere except inputs ─
+  var ps=document.createElement("style");
+  ps.textContent=[
+    "*:not(input):not(textarea):not([contenteditable]){",
+    "-webkit-user-select:none!important;",
+    "-moz-user-select:none!important;",
+    "-ms-user-select:none!important;",
+    "user-select:none!important}",
+    "img{pointer-events:none!important;-webkit-user-drag:none!important;}"
+  ].join("");
+  document.head.appendChild(ps);
+
+  // ── 6. Block print ────────────────────────────────────────
+  window.addEventListener("beforeprint",function(e){
+    // Blank out the page content during print
+    var orig=document.body.innerHTML;
+    document.body.innerHTML="<div style='display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:22px;font-weight:700;color:#1BB68D'>&#128274; Content Protected — Printing Not Allowed</div>";
+    setTimeout(function(){document.body.innerHTML=orig;},500);
+  });
+})();
+</script>
+
+
 </body>
 </html>
