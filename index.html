@@ -38,6 +38,12 @@
   --fs-hero:20px;
   --fs-nav:15px;
   --fs-date:11px;
+  --fs-mob-card:14px;
+  --fs-mob-date:10px;
+  --fs-mob-body:16px;
+  --fs-mob-title:20px;
+  --fs-mob-hero:16px;
+  --fs-mob-nav:13px;
   --dm-bg:#0A0F0D;--dm-bg2:#0F1A16;--dm-bg3:#142119;--dm-bg4:#1A2E23;
   --dm-bdr:#1E3D2E;--dm-txt:#E2F0EC;--dm-sub:#7AAD9A;
 }
@@ -556,7 +562,7 @@ body.dark .art-pg-share-row{border-color:var(--dm-bdr)}
 .sh-tg{background:#dff0fa;color:#2AABEE}
 .sh-wa{background:#dff7eb;color:#25D366}
 .sh-tw{background:#f0f0f0;color:#111}
-.sh-fb{background:#e4ebfb;color:#1877F2}
+.sh-fb{background:#e4ebfb;color:#1877F2;border:none;cursor:pointer}
 body.dark .sh-copy{background:rgba(27,182,141,.18);color:var(--pri2)}
 body.dark .sh-tg{background:rgba(42,171,238,.15);color:#2AABEE}
 body.dark .sh-wa{background:rgba(37,211,102,.15);color:#25D366}
@@ -581,6 +587,11 @@ body.dark .sh-fb{background:rgba(24,119,242,.15);color:#1877F2}
   .wrap{padding:0 16px}
   .hi{padding:0 16px}
   .topics-in{padding:0 16px}
+}
+@media(max-width:600px){
+  .art-pg-body-txt{font-size:var(--fs-mob-body)}
+  .art-pg-sum{font-size:var(--fs-mob-body)}
+  .art-pg-title{font-size:var(--fs-mob-title)}
 }
 @media(max-width:768px){
   nav.dk{display:none}
@@ -618,7 +629,7 @@ body.dark .sh-fb{background:rgba(24,119,242,.15);color:#1877F2}
   .ngrid .nc-img{aspect-ratio:4/3}
   .hero-layout{padding:8px 0 0}
   .hmain{aspect-ratio:16/9;max-height:none;width:100%}
-  .htitle{font-size:17px;line-height:1.55}
+  .htitle{font-size:var(--fs-mob-hero);line-height:1.55}
   .hmain-ov{padding:16px}
   .hside{display:none}
   .dband .fgrid{grid-template-columns:1fr}
@@ -627,7 +638,7 @@ body.dark .sh-fb{background:rgba(24,119,242,.15);color:#1877F2}
   .gal-grid{grid-template-columns:repeat(2,1fr)}
   .sgrid{grid-template-columns:repeat(2,1fr)}
   .sh{flex-direction:row;align-items:center}
-  .st{font-size:17px}
+  .st{font-size:var(--fs-mob-nav)}
   .iulaan-grid{grid-template-columns:1fr}
   .alb-grid{grid-template-columns:repeat(2,1fr);padding:16px 0}
   /* smaller padding everywhere */
@@ -642,8 +653,8 @@ body.dark .sh-fb{background:rgba(24,119,242,.15);color:#1877F2}
   .gal-grid{grid-template-columns:1fr 1fr}
   .amod-body{padding:16px 14px}
   .nc-bd{padding:6px 2px 8px}
-  .nc-ttl{font-size:13px;line-height:1.7;-webkit-line-clamp:3}
-  .nc-date{font-size:10px}
+  .nc-ttl{font-size:var(--fs-mob-card);line-height:1.7;-webkit-line-clamp:3}
+  .nc-date{font-size:var(--fs-mob-date)}
   #lbGrid{grid-template-columns:repeat(2,1fr)}
   .alb-grid{grid-template-columns:1fr}
   .others-grid{grid-template-columns:1fr}
@@ -653,7 +664,7 @@ body.dark .sh-fb{background:rgba(24,119,242,.15);color:#1877F2}
   .nc{width:100%}
   /* header tighter */
   .hi{height:54px;padding:0 10px;gap:8px}
-  .hlogo .wm{font-size:18px}
+  .hlogo .wm{font-size:var(--fs-mob-hero)}
   /* article page very small */
   .art-pg-content-wrap{padding:0 12px 50px}
   .art-pg-hero-wrap{margin:12px 0 0}
@@ -1188,6 +1199,12 @@ onValue(ref(db,'settings/fontSizes'),function(s){
   if(d.hero)r.style.setProperty('--fs-hero',d.hero+'px');
   if(d.nav)r.style.setProperty('--fs-nav',d.nav+'px');
   if(d.date)r.style.setProperty('--fs-date',d.date+'px');
+  if(d.mobCard)r.style.setProperty('--fs-mob-card',d.mobCard+'px');
+  if(d.mobDate)r.style.setProperty('--fs-mob-date',d.mobDate+'px');
+  if(d.mobBody)r.style.setProperty('--fs-mob-body',d.mobBody+'px');
+  if(d.mobTitle)r.style.setProperty('--fs-mob-title',d.mobTitle+'px');
+  if(d.mobHero)r.style.setProperty('--fs-mob-hero',d.mobHero+'px');
+  if(d.mobNav)r.style.setProperty('--fs-mob-nav',d.mobNav+'px');
 });
 
 // FONTS — load from Firebase and apply (MvMAG shows instantly as fallback)
@@ -1373,7 +1390,7 @@ window.openArt=function(id){
     +'</a>'
     +'<a class="art-pg-sh-btn sh-fb" href="https://www.facebook.com/sharer/sharer.php?u='+su+'" target="_blank" rel="noopener" title="Facebook">'
       +'<svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
-    +'</a>';
+    +'</a>'
 
   // ── comments ──
   window._openArtId=id;
@@ -1395,7 +1412,7 @@ window.openArt=function(id){
   });
   try{var sn=localStorage.getItem('cmt_name');if(sn){var ne=document.getElementById('artPgCmtName');if(ne)ne.value=sn;}}catch(ex){}
 
-
+  
   // ── populate custom category links in nav ──
   var navEx=document.getElementById('artPgNavExtra');
   if(navEx){
@@ -1527,92 +1544,32 @@ window.copyLink=function(id){var url='https://www.feeali.com/'+id;var btn=docume
 
 <script>
 (function(){
-  // Show/hide the protection overlay
-  function showProtect(){
-    var ov=document.getElementById("protectOverlay");
-    if(!ov)return;
-    ov.style.display="flex";
-    clearTimeout(ov._t);
-    ov._t=setTimeout(function(){ov.style.display="none";},3500);
-  }
-
-  // ── 1. Block right-click ──────────────────────────────────
-  document.addEventListener("contextmenu",function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    showProtect();
-    return false;
-  },true);
-
-  // ── 2. Block keyboard shortcuts ───────────────────────────
+  function showProtect(){var ov=document.getElementById("protectOverlay");if(!ov)return;ov.style.display="flex";clearTimeout(ov._t);ov._t=setTimeout(function(){ov.style.display="none";},3500);}
+  document.addEventListener("contextmenu",function(e){e.preventDefault();e.stopPropagation();showProtect();return false;},true);
   document.addEventListener("keydown",function(e){
-    var c=e.ctrlKey||e.metaKey;
+    var ctrl=e.ctrlKey||e.metaKey;
     var k=(e.key||"").toLowerCase();
     var kc=e.keyCode||e.which||0;
     var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();
     var inInput=(tag==="input"||tag==="textarea");
-
-    // F12 — DevTools
     if(kc===123){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+U — View Source
-    if(c&&k==="u"){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+S — Save page
-    if(c&&k==="s"){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+P — Print
-    if(c&&k==="p"){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+Shift+I — Inspector
-    if(c&&e.shiftKey&&k==="i"){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+Shift+J — Console
-    if(c&&e.shiftKey&&k==="j"){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+Shift+C — Inspect element
-    if(c&&e.shiftKey&&k==="c"){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+A — Select all (outside inputs)
-    if(c&&k==="a"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
-    // Ctrl+C — Copy (outside inputs)
-    if(c&&k==="c"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&k==="u"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&k==="s"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&k==="p"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&e.shiftKey&&k==="i"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&e.shiftKey&&k==="j"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&e.shiftKey&&k==="c"){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&k==="a"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
+    if(ctrl&&k==="c"&&!inInput){e.preventDefault();e.stopPropagation();showProtect();return false;}
   },true);
-
-  // ── 3. Block copy event (outside form fields) ─────────────
-  document.addEventListener("copy",function(e){
-    var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();
-    if(tag==="input"||tag==="textarea")return;
-    e.preventDefault();
-    e.stopPropagation();
-    showProtect();
-    return false;
-  },true);
-
-  // ── 4. Block drag (images etc.) ───────────────────────────
-  document.addEventListener("dragstart",function(e){
-    var tag=(e.target&&e.target.tagName||"").toLowerCase();
-    if(tag!=="input"&&tag!=="textarea"){
-      e.preventDefault();
-      return false;
-    }
-  },true);
-
-  // ── 5. CSS: disable text selection everywhere except inputs ─
+  document.addEventListener("copy",function(e){var tag=(document.activeElement&&document.activeElement.tagName||"").toLowerCase();if(tag==="input"||tag==="textarea")return;e.preventDefault();e.stopPropagation();showProtect();return false;},true);
+  document.addEventListener("dragstart",function(e){var tag=(e.target&&e.target.tagName||"").toLowerCase();if(tag!=="input"&&tag!=="textarea"){e.preventDefault();return false;}},true);
   var ps=document.createElement("style");
-  ps.textContent=[
-    "*:not(input):not(textarea):not([contenteditable]){",
-    "-webkit-user-select:none!important;",
-    "-moz-user-select:none!important;",
-    "-ms-user-select:none!important;",
-    "user-select:none!important}",
-    "img{pointer-events:none!important;-webkit-user-drag:none!important;}"
-  ].join("");
+  ps.textContent="*:not(input):not(textarea):not([contenteditable]){-webkit-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important}img{pointer-events:none!important;-webkit-user-drag:none!important;}";
   document.head.appendChild(ps);
-
-  // ── 6. Block print ────────────────────────────────────────
-  window.addEventListener("beforeprint",function(e){
-    // Blank out the page content during print
-    var orig=document.body.innerHTML;
-    document.body.innerHTML="<div style='display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:22px;font-weight:700;color:#1BB68D'>&#128274; Content Protected — Printing Not Allowed</div>";
-    setTimeout(function(){document.body.innerHTML=orig;},500);
-  });
+  window.addEventListener("beforeprint",function(e){var orig=document.body.innerHTML;document.body.innerHTML="<div style='display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;font-size:22px;font-weight:700;color:#1BB68D'>🔒 Content Protected — Printing Not Allowed</div>";setTimeout(function(){document.body.innerHTML=orig;},500);});
 })();
 </script>
-
 
 </body>
 </html>
